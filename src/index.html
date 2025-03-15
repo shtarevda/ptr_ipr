@@ -1,0 +1,30 @@
+<link   rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
+>
+
+
+<div id="<%=htmlWebpackPlugin.options.serverSideTemplateIdCode%>">
+
+    <% if (htmlWebpackPlugin.options.serverScript !== '') { %>
+        <script type='text'><%=htmlWebpackPlugin.options.serverScript%></script>
+    <% } %>
+</div>
+
+
+<% for (key in htmlWebpackPlugin.files.js) { %>
+	<script type="text/javascript"
+        src="<%= htmlWebpackPlugin.files.js[key] %>"
+        data-container-id="<%=htmlWebpackPlugin.options.serverSideTemplateIdCode%>">
+    </script>
+<% } %>
+
+
+<%= htmlWebpackPlugin
+  .tags
+  .headTags
+  .filter((tag) => tag.tagName !== 'script')
+  .join('') 
+%>
+
+
+<%= htmlWebpackPlugin.tags.bodyTags %>
