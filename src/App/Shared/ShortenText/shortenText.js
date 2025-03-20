@@ -3,7 +3,7 @@ import { FileTextOutlined } from '@ant-design/icons'
 import { Flex, Popover } from 'antd'
 
 function shortenText(text) {
-    if (text.length > 10) {
+    if (text && text.length > 10) {
         return (
             <Flex gap={5}>
                 <span>{text.slice(0, 10) + '...'}</span>
@@ -13,6 +13,7 @@ function shortenText(text) {
             </Flex>
         )
     }
+
     return text
 }
 

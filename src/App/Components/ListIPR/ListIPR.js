@@ -62,7 +62,7 @@ function ListIPR({ settings, changeRoute }) {
             showSorterTooltip: false,
             sorter: (a, b) =>
                 safeLocaleCompare(a.readiness_percent, b.readiness_percent),
-            render: (value, record) => {
+            render: (value) => {
                 if (value != null) {
                     return <Progress percent={value} status="active" />
                 }
@@ -126,6 +126,31 @@ function ListIPR({ settings, changeRoute }) {
         setCurYear(value)
     }
 
+    const createIPR = async () => {
+        const requestBody = {
+            action: 'action',
+            code: 'create_ipr',
+            wvars: {
+                ...settings
+            }
+        }
+
+        const res = await axios.post(
+            'custom_web_template.html?object_id=' + String(settings.controller_id),
+            requestBody
+        )
+
+        if (!res.data.success) {
+            return
+        }
+        const oResult = JSON.parse(res.data.data.result)
+        if (!oResult.success) {
+            return
+        }
+        getListIPR()
+        changeRoute('ipr_edit/' + oResult.id)
+    }
+
     return (
         <div>
             <Title level={2}>{settings.header_title}</Title>
@@ -144,7 +169,13 @@ function ListIPR({ settings, changeRoute }) {
                     </Flex>
                 ))}
 
-                <Button type="primary">Добавить ИПР</Button>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        createIPR()
+                    }}>
+                    Добавить ИПР
+                </Button>
             </Flex>
             <Table
                 rowKey="id"
