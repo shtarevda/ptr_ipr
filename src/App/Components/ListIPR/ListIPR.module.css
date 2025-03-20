@@ -1,0 +1,6 @@
+.truncateText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 10ch;
+}

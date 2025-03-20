@@ -1,0 +1,43 @@
+body,
+h1,
+div,
+p,
+span,
+a,
+input,
+textarea,
+keygen,
+select,
+button {
+    font-family: 'Inter', 'Roboto', 'Open Sans', Trebuchet MS, Verdana, Tahoma,
+        sans-serif;
+}
+
+body {
+    background-color: white;
+    font-size: 16px;
+}
+
+input[type='button']:hover,
+input[type='submit']:hover,
+button:hover,
+a.button:hover {
+    border-color: transparent !important;
+}
+
+.container {
+}
+
+div.plan,
+a.plan {
+    color: #000 !important;
+}
+
+div.active {
+    border: 2px solid #ffc800;
+    background: #ffc800;
+    color: #000 !important;
+}
+
+@media (max-width: 1140px) {
+}

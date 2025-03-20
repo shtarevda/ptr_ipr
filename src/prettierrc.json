@@ -1,0 +1,62 @@
+{
+	"semi": true,
+	"trailingComma": "all",
+	"singleQuote": true,
+	"printWidth": 120,
+	"useTabs": true,
+	"tabWidth": 4,
+	"endOfLine": "crlf",
+	"bracketSpacing": true,
+	"bracketSameLine": false,
+	"arrowParens": "always",
+	"singleAttributePerLine": true,
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"importOrder": [
+		"^react$",
+
+		"<THIRD_PARTY_MODULES>",
+
+		"^antd(.*)",
+		"^@ant-design(.*)",
+
+		"^@src/app/components/(.*)$",
+		"^(.*)/components/(.*)$",
+
+		"^@src/app/hocs/(.*)$",
+		"^(.*)/hocs/(.*)$",
+
+		"^@src/app/hooks/(.*)$",
+		"^(.*)/hooks/(.*)$",
+
+		"^@src/app/models/(.*)$",
+		"^(.*)/models/(.*)$",
+
+		"^@src/app/pages/(.*)$",
+		"^(.*)/pages/(.*)$",
+
+		"^@src/app/providers/(.*)$",
+		"^(.*)/providers/(.*)$",
+
+		"^@src/app/store/(.*)$",
+		"^(.*)/store/(.*)$",
+
+		"^@src/app/theming/(.*)$",
+		"^(.*)/theming/(.*)$",
+
+		"^@src/app/types/(.*)$",
+		"^(.*)/types/(.*)$",
+
+		"^@src/app/utilities/(.*)$",
+		"^(.*)/utilities/(.*)$",
+
+		"^@src(.*)$",
+
+		"^./(?!.*\\.scss$).*$",
+		"^../(?!.*\\.scss$).*$",
+
+		"(.scss)$"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+	"importOrderCaseInsensitive": true
+}

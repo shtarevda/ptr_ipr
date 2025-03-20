@@ -1,6 +1,3 @@
-import { API_URL } from './constants';
-
-
 /**
  * Распарсить поля json у объекта
  * @param {object} obj - исходный объект
@@ -8,20 +5,19 @@ import { API_URL } from './constants';
  * @return {object}
  */
 function parseJson(obj, fields) {
-    var result = obj;
+    var result = obj
 
     for (var i = 0; i <= fields.length; i++) {
-        var value = result[fields[i]];
+        var value = result[fields[i]]
         if (!value) {
-            continue;
+            continue
         }
 
-        result[fields[i]] = JSON.parse(value);
+        result[fields[i]] = JSON.parse(value)
     }
 
-    return result;
+    return result
 }
-
 
 /**
  * Получение параметров из адресной строки
@@ -30,26 +26,25 @@ function parseJson(obj, fields) {
  * @return {string}
  */
 function getQueryParameter(name, url) {
-    let sUrl = url;
+    let sUrl = url
     if (!sUrl) {
-        sUrl = window.location.href;
+        sUrl = window.location.href
     }
-    
-    const paramName = name.replace(/[\[\]]/g, '\\$&');
-    const regex = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
 
-    const results = regex.exec(sUrl);
+    const paramName = name.replace(/[\[\]]/g, '\\$&')
+    const regex = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)')
+
+    const results = regex.exec(sUrl)
     if (!results) {
-        return null;
+        return null
     }
-    
+
     if (!results[2]) {
-        return '';
+        return ''
     }
 
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    return decodeURIComponent(results[2].replace(/\+/g, ' '))
 }
-
 
 /**
  *
@@ -63,18 +58,18 @@ function getQueryParameter(name, url) {
  * @returns { AuthorizeStatus } object with status
  */
 function checkAuthorization(xhr) {
-    let message = '';
-    let error = false;
-    const server = xhr.getResponseHeader('server');
+    let message = ''
+    let error = false
+    const server = xhr.getResponseHeader('server')
     if (server.indexOf('WebSEAL') != -1) {
-        message = 'Истекло время подключения, перезагрузите, страницу!';
-        error = true;
+        message = 'Истекло время подключения, перезагрузите, страницу!'
+        error = true
     }
 
     return {
         error,
-        message,
-    };
+        message
+    }
 }
 
 // function buildRouteObject() {
@@ -106,28 +101,31 @@ function checkAuthorization(xhr) {
 // }
 
 function execQueryParams(params) {
-    return (params.match(new RegExp('([^?=&]+)(=([^&]*))?', 'g')) || []).reduce(function (result, each, n, every) {
-        let [key, value] = each.split('=');
-        result[key] = value;
-        return result;
-    }, {});
+    return (params.match(new RegExp('([^?=&]+)(=([^&]*))?', 'g')) || []).reduce(
+        function (result, each, n, every) {
+            let [key, value] = each.split('=')
+            result[key] = value
+            return result
+        },
+        {}
+    )
 }
 
 /**
  * Check is mobile layout
  */
 function isMobile() {
-    const checkStrings = ['(max-width: 575.98px)', '(max-width: 768.98px)'];
-    let isMobile = false;
+    const checkStrings = ['(max-width: 575.98px)', '(max-width: 768.98px)']
+    let isMobile = false
     if (window.matchMedia) {
         checkStrings.forEach((s) => {
             if (window.matchMedia(s).matches) {
-                isMobile = true;
+                isMobile = true
             }
-        });
+        })
     }
 
-    return isMobile;
+    return isMobile
 }
 
 /**
@@ -140,70 +138,15 @@ function isMobile() {
  * @param { int } delay
  */
 function debounce(callback, delay = 250) {
-    let timeoutId;
+    let timeoutId
     return (...args) => {
-        clearTimeout(timeoutId);
+        clearTimeout(timeoutId)
         timeoutId = setTimeout(() => {
-            timeoutId = null;
-            callback(...args);
-        }, delay);
-    };
-}
-
-/**
- *
- * @param { Object } params - набор параметров для передачи
- * @param { Function } resolve - функция, которая будет вызвана если запрос выполнится успешно
- * @param { Function } reject - функция, которая будет вызвана если запрос выполнился не успешно
- */
-function apiRequest(params, resolve, reject) {
-    const userId = getQueryParameter('userId');
-    const { type, code, wvars } = params;
-
-    // предопределенные переменные, что бы каждый раз их не задавать
-    const defaultWvars = {
-        userId: userId,
-        is_data_grid: 'true',
-    };
-
-    // нужно определять тип удаленного действия
-    let codeTypeParam = { action_code: code };
-    if (type === 'collection') {
-        codeTypeParam = { collection_code: code };
+            timeoutId = null
+            callback(...args)
+        }, delay)
     }
-
-    // собираем параметры запроса
-    let requestParams = {
-        ...codeTypeParam,
-        wvars: { ...defaultWvars, ...wvars },
-    };
-
-    let paramsToUpload = {
-        action_type: type,
-        params: JSON.stringify(requestParams),
-    };
-
-    $.ajax({
-        url: API_URL,
-        data: paramsToUpload,
-        cache: false,
-        type: 'GET',
-        dataType: 'JSON',
-    })
-        .done((data, status, xhr) => {
-            const isAuthorized = checkAuthorization(xhr);
-            if (isAuthorized.error) {
-                reject(isAuthorized);
-                return;
-            } else if (data.error === 1 || (data.success !== undefined && !data.success) ) {
-                reject({ error: true, message: data.messageText });
-                return;
-            }
-            resolve(data);
-        })
-        .fail(reject);
 }
-
 
 /**
  * Функция сделает строку с инициалами из переданного ФИО
@@ -211,11 +154,10 @@ function apiRequest(params, resolve, reject) {
  * @returns string
  */
 function createIconLabel(fullname) {
-    let [surname, firstname] = fullname.split(' ');
-    let iconLabel = surname[0] + firstname[0];
+    let [surname, firstname] = fullname.split(' ')
+    let iconLabel = surname[0] + firstname[0]
 
-    return iconLabel;
+    return iconLabel
 }
 
-
-export { parseJson, getQueryParameter, isMobile, debounce, apiRequest, createIconLabel };
+export { parseJson, getQueryParameter, isMobile, debounce, createIconLabel }
