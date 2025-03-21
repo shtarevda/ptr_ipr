@@ -2,6 +2,7 @@ import React from 'react'
 import MainLayout from './Components/layouts/MainLayout'
 import useRoute from '@hooks/useRoute'
 import { ConfigProvider } from 'antd'
+import ru_RU from 'antd/locale/ru_RU'
 
 function App({ settings }) {
     const {
@@ -11,6 +12,7 @@ function App({ settings }) {
     } = useRoute()
     return (
         <ConfigProvider
+            locale={ru_RU}
             theme={{
                 token: {
                     colorPrimary: '#FC3',

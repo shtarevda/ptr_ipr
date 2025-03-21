@@ -9,7 +9,13 @@ textarea,
 keygen,
 select,
 button {
-    font-family: 'Inter', 'Roboto', 'Open Sans', Trebuchet MS, Verdana, Tahoma,
+    font-family:
+        'Inter',
+        'Roboto',
+        'Open Sans',
+        Trebuchet MS,
+        Verdana,
+        Tahoma,
         sans-serif;
 }
 
@@ -23,6 +29,11 @@ input[type='submit']:hover,
 button:hover,
 a.button:hover {
     border-color: transparent !important;
+}
+
+a,
+a:visited {
+    color: transparent;
 }
 
 .container {

@@ -147,7 +147,7 @@ function ListIPR({ settings, changeRoute }) {
         if (!oResult.success) {
             return
         }
-        getListIPR()
+        //getListIPR()
         changeRoute('ipr_edit/' + oResult.id)
     }
 
