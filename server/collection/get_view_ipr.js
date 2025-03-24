@@ -61,10 +61,17 @@ function getViewIPR(eduPlanID) {
                 'ipr_type'
             ).value.Value
         oResult.boss = []
+        oResult.cur_user_is_boss = false
         oResult.state_id = docEduPlan.TopElem.state_id.Value
-        oResult.status = getStatusByID(docEduPlan.TopElem.state_id)
+        oResult.status =
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                'ipr_status'
+            ).value.Value
+        oResult.can_edit =
+            oResult.status == 'В процессе' || oResult.status == 'Завершено'
         oResult.comment = docEduPlan.TopElem.comment.Value
         if (docEduPlan.TopElem.tutor_id.HasValue) {
+            oResult.cur_user_is_boss = curUserID == docEduPlan.TopElem.tutor_id
             oBoss = docEduPlan.TopElem.tutor_id.OptForeignElem
             if (oBoss != undefined) {
                 oResult.boss.push({

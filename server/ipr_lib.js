@@ -57,6 +57,8 @@ function createEduPlan(userID) {
     docEduPlan.TopElem.view.part_index = 0
     docEduPlan.TopElem.code = 'ipr'
     docEduPlan.TopElem.name = 'ИПР. ' + docEduPlan.TopElem.person_fullname
+    docEduPlan.TopElem.custom_elems.ObtainChildByKey('ipr_status').value =
+        'Черновик'
     docEduPlan.BindToDb()
     docEduPlan.Save()
     return docEduPlan

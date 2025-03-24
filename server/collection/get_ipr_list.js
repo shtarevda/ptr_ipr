@@ -29,10 +29,11 @@ function getQuery(userId) {
                 CAST(ep.id AS varchar(20)) AS id, \
                 ep2.data.value('(/education_plan/custom_elems/custom_elem[name=''ipr_type'']/value)[1]', 'varchar(500)') AS process_name, \
                 (SELECT TOP 1 c.fullname FROM collaborators c WHERE c.id = ep2.data.value('(/education_plan/tutor_id)[1]', 'bigint')) AS boss_fullname, \
+                ep.create_date AS cr_date, \
                 FORMAT(ep.create_date, 'dd.MM.yyyy') AS create_date, \
                 FORMAT(ep.plan_date, 'dd.MM.yyyy') AS plan_date, \
                 FORMAT(ep.finish_date, 'dd.MM.yyyy') AS finish_date, \
-                (SELECT TOP 1 CASE WHEN els.name = 'Назначен' THEN 'Черновик' WHEN els.name = 'Просмотрен' THEN 'На согласовании' END AS status_name FROM [common.education_learning_states] els WHERE els.id = ep.state_id) AS status_name, \
+                ep2.data.value('(/education_plan/custom_elems/custom_elem[name=''ipr_status'']/value)[1]', 'varchar(100)') AS status_name, \
                 CAST(ep.readiness_percent AS varchar(3)) AS readiness_percent, \
                 ep2.data.value('(/education_plan/comment)[1]', 'varchar(max)') AS comment, \
                 YEAR(ep.create_date) AS start_year \
@@ -50,7 +51,7 @@ function getQuery(userId) {
             JSON_QUERY( \
                 ( \
                     SELECT  \
-                        JSON_QUERY((SELECT * FROM ipr_data ORDER BY create_date FOR JSON PATH)) AS ipr, \
+                        JSON_QUERY((SELECT * FROM ipr_data ORDER BY cr_date DESC FOR JSON PATH)) AS ipr, \
                         JSON_QUERY((SELECT * FROM filter_data FOR JSON PATH)) AS filters \
                     FOR JSON PATH, WITHOUT_ARRAY_WRAPPER \
                 ) \

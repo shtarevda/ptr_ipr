@@ -18,6 +18,16 @@ try {
     var sReturnValue = {}
     if (docEduPlan != undefined) {
         switch (oData.type) {
+            case 'approval':
+                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                    'ipr_status'
+                ).value = 'В процессе'
+                break
+            case 'on_approval':
+                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                    'ipr_status'
+                ).value = 'На согласовании'
+                break
             case 'custom':
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                     oData.field
@@ -166,6 +176,60 @@ try {
                             break
                         case 'field':
                             program.Child(oData.field.name).Value = oData.value
+                            break
+                        case 'field_is_done':
+                            program.Child(oData.field.name).Value = oData.value
+                            if (oData.value != 0) {
+                                program.finish_date = Date()
+                            } else {
+                                program.finish_date.Clear()
+                            }
+                            sReturnValue = {
+                                is_done: oData.value != 0,
+                                finish_date: StrDate(program.finish_date, false)
+                            }
+                            var aTasks = ArraySelect(
+                                docEduPlan.TopElem.programs,
+                                'This.type != "folder"'
+                            )
+                            var nTasks = ArrayCount(aTasks)
+                            var nDoneTasks = ArrayCount(
+                                ArraySelect(
+                                    aTasks,
+                                    'This.state_id == 4 || This.state_id == 2'
+                                )
+                            )
+
+                            docEduPlan.TopElem.readiness_percent = StrReal(
+                                (Real(nDoneTasks) / Real(nTasks)) * 100.0,
+                                0
+                            )
+
+                            if (docEduPlan.TopElem.readiness_percent == 100) {
+                                for (elem in ArraySelect(
+                                    docEduPlan.TopElem.programs,
+                                    'This.type == "folder"'
+                                )) {
+                                    elem.state_id = 4
+                                }
+                                docEduPlan.TopElem.state_id = 4
+                                docEduPlan.TopElem.finish_date = Date()
+                                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                                    'ipr_status'
+                                ).value = 'Завершено'
+                            } else {
+                                sStatus =
+                                    docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                                        'ipr_status'
+                                    ).value
+                                if (sStatus != 'В процессе') {
+                                    docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                                        'ipr_status'
+                                    ).value = 'В процессе'
+                                    docEduPlan.TopElem.state_id = 1
+                                    docEduPlan.TopElem.finish_date.Clear()
+                                }
+                            }
                             break
                     }
                 }

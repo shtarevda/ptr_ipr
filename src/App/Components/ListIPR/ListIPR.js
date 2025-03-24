@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Button, Flex, Progress, Select, Table, Typography, Badge } from 'antd'
+import {
+    Button,
+    Flex,
+    Progress,
+    Select,
+    Table,
+    Typography,
+    Badge,
+    Spin
+} from 'antd'
 import getStatusColor from '../utils/getStatusColor'
 
 import Classes from './ListIPR.module.css'
@@ -92,6 +101,7 @@ function ListIPR({ settings, changeRoute }) {
     const [listIPR, setListIPR] = useState([])
     const [filters, setFilters] = useState([])
     const [curYear, setCurYear] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const getListIPR = async () => {
         const requestBody = {
@@ -106,7 +116,7 @@ function ListIPR({ settings, changeRoute }) {
             'custom_web_template.html?object_id=' + String(settings.controller_id),
             requestBody
         )
-
+        setLoading(false)
         if (!res.data.success || res.data.data.results.length == 0) return []
         const aResult = JSON.parse(res.data.data.results[0].result)
         setListIPR(aResult.ipr)
@@ -114,6 +124,7 @@ function ListIPR({ settings, changeRoute }) {
     }
 
     useEffect(() => {
+        setLoading(true)
         getListIPR()
     }, [])
 
@@ -177,11 +188,17 @@ function ListIPR({ settings, changeRoute }) {
                     Добавить ИПР
                 </Button>
             </Flex>
-            <Table
-                rowKey="id"
-                columns={columns}
-                dataSource={filteredListIPR}
-                pagination={false}></Table>
+            {loading ? (
+                <Spin tip="Загрузка...">
+                    <div style={{ padding: '50px' }}></div>
+                </Spin>
+            ) : (
+                <Table
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={filteredListIPR}
+                    pagination={false}></Table>
+            )}
         </div>
     )
 }
