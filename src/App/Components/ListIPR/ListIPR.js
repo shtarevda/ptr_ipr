@@ -82,7 +82,7 @@ function ListIPR({ settings, changeRoute }) {
             render: (value) => (
                 <Button
                     type="link"
-                    onClick={() => changeRoute('ipr_edit/' + value)}>
+                    onClick={() => changeRoute('ipr_view/' + value)}>
                     <EditTwoTone />
                 </Button>
             )

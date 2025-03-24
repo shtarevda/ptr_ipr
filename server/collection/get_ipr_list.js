@@ -32,7 +32,7 @@ function getQuery(userId) {
                 FORMAT(ep.create_date, 'dd.MM.yyyy') AS create_date, \
                 FORMAT(ep.plan_date, 'dd.MM.yyyy') AS plan_date, \
                 FORMAT(ep.finish_date, 'dd.MM.yyyy') AS finish_date, \
-                (SELECT TOP 1 CASE WHEN els.name = 'Назначен' THEN 'Черновик' END AS status_name FROM [common.education_learning_states] els WHERE els.id = ep.state_id) AS status_name, \
+                (SELECT TOP 1 CASE WHEN els.name = 'Назначен' THEN 'Черновик' WHEN els.name = 'Просмотрен' THEN 'На согласовании' END AS status_name FROM [common.education_learning_states] els WHERE els.id = ep.state_id) AS status_name, \
                 CAST(ep.readiness_percent AS varchar(3)) AS readiness_percent, \
                 ep2.data.value('(/education_plan/comment)[1]', 'varchar(max)') AS comment, \
                 YEAR(ep.create_date) AS start_year \

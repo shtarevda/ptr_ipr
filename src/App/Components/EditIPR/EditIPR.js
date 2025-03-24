@@ -248,7 +248,13 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         Добавить компетенцию
                     </Button>
                     <Space size={8}>
-                        <Button type="primary">Сохранить</Button>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                changeRoute('ipr_view/' + curSubRoutes[0])
+                            }}>
+                            Сохранить
+                        </Button>
                         <Button type="default" onClick={showConfirmDeleteModal}>
                             Удалить ИПР
                         </Button>
