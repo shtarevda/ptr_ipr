@@ -1,14 +1,14 @@
-export default (setChange) => {
+export default (multiselect, setRecords) => {
     return {
         catalog: 'collaborators',
         fields: {
-            code: ['тн', '9%'],
-            fullname: ['ФИО', '30%'],
+            fullname: ['ФИО', '39%'],
             position_name: ['Должность', '20%'],
             position_parent_name: ['Подразделение', '20%'],
             org_name: ['Организация', '20%']
         },
-        multiselect: false,
+        multiselect: multiselect,
+        setRecords: setRecords,
         find: [
             'id',
             'fullname',

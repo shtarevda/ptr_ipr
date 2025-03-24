@@ -26,7 +26,7 @@ function App({ settings }) {
                 components: {
                     Typography: {
                         fontSizeHeading1: 40,
-                        titleMarginBottom: '40',
+                        titleMarginBottom: '40px',
                         titleMarginTop: '0',
                         lineHeightHeading1: 1.3,
                         fontSizeHeading2: 32,
@@ -34,25 +34,53 @@ function App({ settings }) {
                             "Inter, Consolas, 'Liberation Mono', Menlo, Courier, monospace"
                     },
                     Button: {
-                        contentFontSize: 18,
-                        defaultBorderColor: 'transparent',
-                        borderRadius: 4,
+                        contentFontSize: 16,
+                        borderRadius: 2,
                         paddingInline: 15,
                         controlHeight: 40,
                         defaultBg: 'transparent',
-                        defaultHoverBg: 'transparent',
-                        defaultActiveBorderColor: 'transparent',
-                        defaultHoverColor: 'transparent',
+                        defaultHoverBg: 'rgba(255, 204, 51, 0.20)',
+                        defaultActiveBorderColor: 'rgb(255,200,0)',
                         defaultActiveBg: 'transparent',
+                        defaultActiveColor: '#313A4A',
+                        defaultBorderColor: 'rgb(255,200,0)',
+                        defaultHoverColor: '#313A4A',
+                        defaultHoverBorderColor: 'rgb(255,200,0)',
                         primaryShadow: '0',
                         primaryColor: '#313A4A',
+                        primaryHoverBorderColor: 'transparent',
                         colorPrimaryHover: '#FFBE05',
                         colorPrimaryBorder: '#FFBE05',
                         colorPrimaryActive: 'rgb(255,200,0)',
-                        colorLinkHover: 'rgb(204,44,0)'
+                        colorLinkHover: 'rgb(204,44,0)',
+                        textHoverBg: 'rgba(0,0,0,0)',
+                        textTextColor: '#313A4A',
+                        textTextHoverColor: '#ed1c25',
+                        colorBgTextActive: 'rgba(255,255,255,0)',
+                        textTextActiveColor: 'rgb(255,200,0)'
+                    },
+                    Tabs: {
+                        itemSelectedColor: 'rgb(204,44,0)',
+                        itemHoverColor: '#313A4A',
+                        itemActiveColor: '#313A4A',
+                        cardBg: '#FAFAFA',
+                        borderRadiusLG: 2,
+                        margin: 0,
+                        colorBorderSecondary: 'rgb(255,255,255)',
+                        cardGutter: 4,
+                        colorBorderSecondary: '#F0F0F0'
                     },
                     Layout: {
                         bodyBg: 'rgb(255,255,255)'
+                    },
+                    Input: {
+                        borderRadius: 2
+                    },
+                    Select: {
+                        borderRadius: 2
+                    },
+                    DatePicker: {
+                        borderRadius: 2
                     }
                 }
             }}>
@@ -60,6 +88,7 @@ function App({ settings }) {
                 settings={settings.data}
                 currentRoute={currentRoute}
                 changeRoute={changeRoute}
+                curSubRoutes={curSubRoutes}
             />
         </ConfigProvider>
     )

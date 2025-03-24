@@ -63,6 +63,31 @@ function createEduPlan(userID) {
 }
 
 /**
+ * Удалить план обучения
+ * @param {string} eduPlanID - идентификатор плана обучения
+ * @return {boolean}
+ */
+function deleteEduPlan(eduPlanID) {
+    var bOK = false
+    if (eduPlanID == undefined || OptInt(eduPlanID, 0) == 0) {
+        addLog('Не передан ID плана обучения')
+        return false
+    }
+    oEduPlan = ArrayOptFirstElem(
+        XQuery(
+            'for $elem in education_plans where $elem/id = ' +
+                eduPlanID +
+                ' return $elem'
+        )
+    )
+    if (oEduPlan != undefined) {
+        bOK = true
+        DeleteDoc(UrlFromDocID(oEduPlan.id))
+    }
+    return bOK
+}
+
+/**
  * Получить карточку плана обучения
  * @param {string} userID - ID пользователя
  * @param {boolean} bCreate - флаг для создания плана, если план не найден

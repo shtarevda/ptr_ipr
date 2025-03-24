@@ -1,0 +1,9 @@
+.addButton {
+    align-self: flex-start;
+    height: 30px;
+}
+
+.personsWrap {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
