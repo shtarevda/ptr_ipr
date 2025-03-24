@@ -5,12 +5,17 @@ import { DeleteOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import Classes from './Competences.module.css'
 import Tasks from './Tasks/Tasks'
 import Collaborators from './Collaborators/Collaborators'
-import Catalogs from './Catalogs/Catalogs'
+import Learnings from './Learnings/Learnings'
 
 const Title = Typography.Title
 const { TextArea } = Input
 
-function Competences({ competences, setCompetences, saveFieldIPR }) {
+function Competences({
+    competences,
+    setCompetences,
+    saveFieldIPR,
+    setOpenCatalog
+}) {
     const handleSelectCompetence = (value, program_id) => {
         const callback = () => {
             setCompetences(
@@ -202,12 +207,13 @@ function Competences({ competences, setCompetences, saveFieldIPR }) {
                                     ),
                                     children: (
                                         <div style={{ margin: '16px' }}>
-                                            <Catalogs
+                                            <Learnings
                                                 items={competence.learnings}
                                                 saveFieldIPR={saveFieldIPR}
                                                 parentProgpamID={competence.id}
                                                 setCompetences={setCompetences}
                                                 competences={competences}
+                                                setOpenCatalog={setOpenCatalog}
                                             />
                                         </div>
                                     )

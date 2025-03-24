@@ -17,6 +17,10 @@ try {
     var docEduPlan = tools.open_doc(eduPlanID)
     var sReturnValue = {}
     if (docEduPlan != undefined) {
+        var aCompetences = ArraySelect(
+            docEduPlan.TopElem.programs,
+            'This.type == "folder"'
+        )
         switch (oData.type) {
             case 'approval':
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
@@ -206,10 +210,7 @@ try {
                             )
 
                             if (docEduPlan.TopElem.readiness_percent == 100) {
-                                for (elem in ArraySelect(
-                                    docEduPlan.TopElem.programs,
-                                    'This.type == "folder"'
-                                )) {
+                                for (elem in aCompetences) {
                                     elem.state_id = 4
                                 }
                                 docEduPlan.TopElem.state_id = 4

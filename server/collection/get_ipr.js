@@ -43,11 +43,12 @@ function getIPR(eduPlanID) {
             }
         }
         oResult.plan_date = StrDate(docEduPlan.TopElem.plan_date.Value, false)
-        oResult.competences = []
-        for (elem in ArraySelect(
+        var aCompetences = ArraySelect(
             docEduPlan.TopElem.programs,
             'This.type == "folder"'
-        )) {
+        )
+        oResult.competences = []
+        for (elem in aCompetences) {
             oItem = {}
             oItem.id = elem.id.Value
             oItem.name = elem.name.Value
@@ -69,6 +70,7 @@ function getIPR(eduPlanID) {
                 oTask.id = task.id.Value
                 oTask.parent_progpam_id = task.parent_progpam_id.Value
                 oTask.type = task.type.Value
+                oTask.type_name = task.type == 'course' ? 'Курс' : 'Мероприятие'
                 oTask.name = task.name.Value
                 oTask.create_date = StrDate(task.create_date.Value, false)
                 oTask.plan_date = StrDate(task.plan_date.Value, false)

@@ -24,6 +24,7 @@ const Title = Typography.Title
 function EditIPR({ settings, changeRoute, curSubRoutes }) {
     const [competences, setCompetences] = useState([])
     const [catalogType, setCatalogType] = useState('')
+    const [openCatalog, setOpenCatalog] = useState(false)
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [boss, setBoss] = useState([])
     const [ipr, setIPR] = useState()
@@ -238,15 +239,18 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         competences={competences}
                         setCompetences={setCompetences}
                         saveFieldIPR={saveFieldIPR}
+                        setOpenCatalog={setOpenCatalog}
                     />
 
-                    <Button
-                        type="text"
-                        className={Classes.addCompButton}
-                        onClick={handleAddCompetence}>
-                        <PlusOutlined />
-                        Добавить компетенцию
-                    </Button>
+                    {competences.length < 4 && (
+                        <Button
+                            type="text"
+                            className={Classes.addCompButton}
+                            onClick={handleAddCompetence}>
+                            <PlusOutlined />
+                            Добавить компетенцию
+                        </Button>
+                    )}
                     <Space size={8}>
                         <Button
                             type="primary"
@@ -264,8 +268,20 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                             onOk={handleDeleteIPR}
                             onCancel={hideConfirmDeleteModal}
                             okText="Удалить ИПР"
-                            cancelText="Отмена">
+                            cancelText="Отмена"
+                            centered>
                             <p>Вы действительно хотите удалить ИПР?</p>
+                        </Modal>
+                        <Modal
+                            title={<Title level={2}>Каталог программ</Title>}
+                            open={openCatalog}
+                            onCancel={() => {
+                                setOpenCatalog(false)
+                            }}
+                            footer={null}
+                            width={1520}
+                            centered>
+                            <p>Каталог программ</p>
                         </Modal>
                     </Space>
                 </Flex>
