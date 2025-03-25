@@ -27,6 +27,7 @@ function SelectWindow({
                     defaultValue=""
                     value={collaborators.map((item) => item.fullname).join(', ')}
                     placeholder={placeholder}
+                    style={{ width: '300px' }}
                     size="middle"
                     allowClear
                     onClick={set}

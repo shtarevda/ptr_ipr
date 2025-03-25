@@ -135,16 +135,34 @@ try {
                 if (oData.field.program_id == '') {
                     program = docEduPlan.TopElem.programs.AddChild()
                     program.type = oData.field.field_type
+                    sName = ''
+                    sTypeName = ''
+                    sType = oData.field.field_type
+                    if (oData.field.field_type == 'education_method') {
+                        program.education_method_id = oData.value
+                        program.plan_date = docEduPlan.TopElem.plan_date
+                        oEdu = program.education_method_id.OptForeignElem
+                        if (oEdu != undefined) {
+                            sName = oEdu.name.Value
+                            sType = oEdu.type.Value
+                            sTypeName =
+                                oEdu.type == 'course' ? 'Курс' : 'Мероприятие'
+                            program.name = sName
+                            program.type = sType
+                        }
+                    }
                     sReturnValue = {
                         id: program.id.Value,
                         parent_progpam_id: oData.field.parent_progpam_id,
-                        type: oData.field.field_type,
-                        name: '',
-                        create_date: '',
+                        type: sType,
+                        type_name: sTypeName,
+                        name: sName,
+                        create_date: StrDate(program.create_date, false),
                         plan_date: '',
                         finish_date: '',
                         state_id: 0,
-                        comment: ''
+                        comment: '',
+                        edu_program_id: oData.value
                     }
                 } else {
                     program = ArrayOptFind(

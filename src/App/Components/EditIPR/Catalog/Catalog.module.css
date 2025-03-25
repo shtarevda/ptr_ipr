@@ -1,0 +1,45 @@
+.card {
+    display: flex;
+    height: 386px;
+    width: 348px;
+    flex-direction: column;
+    border-radius: 16px;
+    border: 1px solid #dfe0e5;
+    background: #fff;
+}
+
+.cardTitle {
+    overflow: hidden;
+    color: #313a4a;
+    text-overflow: ellipsis;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.cardContent {
+    display: flex;
+    flex: 1;
+    padding: 24px;
+}
+
+.shortDesc {
+    color: #313a4a;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.cover {
+    align-self: flex-start;
+    width: 100%;
+    height: 160px;
+    background: #ebf4f8 no-repeat top / cover;
+}
+
+.addedButton {
+    background: #bbdfef;
+    border: 1px solid #bbdfef;
+}

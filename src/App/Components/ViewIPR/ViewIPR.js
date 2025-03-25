@@ -316,7 +316,10 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                     </Flex>
                     <Space size={8}>
                         {viewIPR.status == 'Черновик' && (
-                            <Button type="primary" onClick={handleSendApproval}>
+                            <Button
+                                type="primary"
+                                onClick={handleSendApproval}
+                                disabled={viewIPR.programs.length == 0}>
                                 Отправить на согласование
                             </Button>
                         )}
@@ -332,6 +335,9 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                                 changeRoute('ipr_edit/' + curSubRoutes[0])
                             }>
                             Редактировать
+                        </Button>
+                        <Button type="default" onClick={() => changeRoute('')}>
+                            Вернуться к списку
                         </Button>
                     </Space>
                 </Flex>

@@ -71,6 +71,7 @@ function getIPR(eduPlanID) {
                 oTask.parent_progpam_id = task.parent_progpam_id.Value
                 oTask.type = task.type.Value
                 oTask.type_name = task.type == 'course' ? 'Курс' : 'Мероприятие'
+                oTask.edu_program_id = task.education_method_id.Value
                 oTask.name = task.name.Value
                 oTask.create_date = StrDate(task.create_date.Value, false)
                 oTask.plan_date = StrDate(task.plan_date.Value, false)

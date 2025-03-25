@@ -18,14 +18,16 @@ import SelectWindow from '../../Shared/SelectWindow'
 import Classes from './EditIPR.module.css'
 import { PlusOutlined } from '@ant-design/icons'
 import Competences from './Competences/Competences'
+import Catalog from './Catalog/Catalog'
 
 const Title = Typography.Title
 
 function EditIPR({ settings, changeRoute, curSubRoutes }) {
     const [competences, setCompetences] = useState([])
-    const [catalogType, setCatalogType] = useState('')
     const [openCatalog, setOpenCatalog] = useState(false)
+    const [catalogType, setCatalogType] = useState('')
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
+    const [parentProgpamID, setParentProgpamID] = useState('')
     const [boss, setBoss] = useState([])
     const [ipr, setIPR] = useState()
 
@@ -195,8 +197,8 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         <div className={Classes.fieldLabel}>Процесс:</div>
                         <Select
                             popupMatchSelectWidth={false}
-                            placeholder="Выберите"
-                            value={ipr.process}
+                            placeholder="Выбрать"
+                            value={ipr.process ? ipr.process : null}
                             onChange={(value) => {
                                 handleSelectProcess(value)
                             }}
@@ -240,6 +242,8 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         setCompetences={setCompetences}
                         saveFieldIPR={saveFieldIPR}
                         setOpenCatalog={setOpenCatalog}
+                        setCatalogType={setCatalogType}
+                        setParentProgpamID={setParentProgpamID}
                     />
 
                     {competences.length < 4 && (
@@ -281,7 +285,14 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                             footer={null}
                             width={1520}
                             centered>
-                            <p>Каталог программ</p>
+                            <Catalog
+                                settings={settings}
+                                catalogType={catalogType}
+                                competences={competences}
+                                setCompetences={setCompetences}
+                                saveFieldIPR={saveFieldIPR}
+                                parentProgpamID={parentProgpamID}
+                            />
                         </Modal>
                     </Space>
                 </Flex>

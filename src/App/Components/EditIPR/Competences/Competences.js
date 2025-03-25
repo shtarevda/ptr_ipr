@@ -14,7 +14,9 @@ function Competences({
     competences,
     setCompetences,
     saveFieldIPR,
-    setOpenCatalog
+    setOpenCatalog,
+    setCatalogType,
+    setParentProgpamID
 }) {
     const handleSelectCompetence = (value, program_id) => {
         const callback = () => {
@@ -119,6 +121,30 @@ function Competences({
                                 {
                                     value: '7335364727923484114',
                                     label: 'Интересуйся технологиями'
+                                },
+                                {
+                                    value: '7335364728305510084',
+                                    label: 'Будь лучше себя вчерашнего'
+                                },
+                                {
+                                    value: '7335364728312309329',
+                                    label: 'Ищи возможности для улучшений'
+                                },
+                                {
+                                    value: '7335364728682330123',
+                                    label: 'Действуй осознанно'
+                                },
+                                {
+                                    value: '7335364729076808748',
+                                    label: 'Помогай и поддерживай'
+                                },
+                                {
+                                    value: '7335364729080191987',
+                                    label: 'Создавай условия и рабочую атмосферу'
+                                },
+                                {
+                                    value: '7335364729086816643',
+                                    label: 'Признавай свои ошибки. Признавай право других на ошибки'
                                 }
                             ]}
                         />
@@ -214,6 +240,10 @@ function Competences({
                                                 setCompetences={setCompetences}
                                                 competences={competences}
                                                 setOpenCatalog={setOpenCatalog}
+                                                setCatalogType={setCatalogType}
+                                                setParentProgpamID={
+                                                    setParentProgpamID
+                                                }
                                             />
                                         </div>
                                     )

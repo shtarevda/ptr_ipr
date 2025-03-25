@@ -10,7 +10,9 @@ function Learnings({
     parentProgpamID,
     setCompetences,
     competences,
-    setOpenCatalog
+    setOpenCatalog,
+    setCatalogType,
+    setParentProgpamID
 }) {
     const handleDeleteLearning = (program_id, parent_progpam_id) => {
         const callback = () => {
@@ -33,6 +35,7 @@ function Learnings({
         }
         saveFieldIPR(oData, callback)
     }
+
     return (
         <Flex vertical gap={8}>
             <Space size={8}>
@@ -40,7 +43,9 @@ function Learnings({
                     type="primary"
                     className={Classes.addCalalogButton}
                     onClick={() => {
+                        setCatalogType('course')
                         setOpenCatalog(true)
+                        setParentProgpamID(parentProgpamID)
                     }}>
                     <PlusOutlined />
                     Выбрать из каталога курсов
@@ -48,7 +53,11 @@ function Learnings({
                 <Button
                     type="primary"
                     className={Classes.addCalalogButton}
-                    onClick={() => {}}>
+                    onClick={() => {
+                        setCatalogType('org')
+                        setOpenCatalog(true)
+                        setParentProgpamID(parentProgpamID)
+                    }}>
                     <PlusOutlined />
                     Выбрать из каталога мероприятий
                 </Button>
