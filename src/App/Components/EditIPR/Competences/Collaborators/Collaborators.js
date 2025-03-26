@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Flex, Input } from 'antd'
+import { DatePicker, Flex, Input } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
 
 import Classes from './Collaborators.module.css'
 import SelectWindow from '../../../../Shared/SelectWindow'
@@ -97,6 +99,39 @@ function Collaborators({
         }
         saveFieldIPR(oData, callback)
     }
+
+    const handleSelectPlanDate = (value, program_id, parent_progpam_id) => {
+        const callback = () => {
+            setCompetences(
+                competences.map((item) => {
+                    if (item.id === parent_progpam_id) {
+                        item.collaborators.items = item.collaborators.items.map(
+                            (sub_item) => {
+                                if (sub_item.id === program_id) {
+                                    return { ...sub_item, plan_date: value }
+                                }
+                                return sub_item
+                            }
+                        )
+                        return item
+                    }
+                    return item
+                })
+            )
+        }
+
+        const oData = {
+            type: 'program',
+            field: {
+                program_id: program_id,
+                parent_progpam_id: '',
+                type: 'field',
+                name: 'plan_date'
+            },
+            value: value
+        }
+        saveFieldIPR(oData, callback)
+    }
     return (
         <Flex vertical gap={8}>
             <SelectWindow
@@ -140,6 +175,25 @@ function Collaborators({
                                     parentProgpamID
                                 )
                             }}
+                        />
+                    </div>
+                    <div>
+                        <DatePicker
+                            onChange={(date, dateString) => {
+                                handleSelectPlanDate(
+                                    dateString,
+                                    item.id,
+                                    parentProgpamID
+                                )
+                            }}
+                            format="DD.MM.YYYY"
+                            variant="underlined"
+                            className={Classes.datePiker}
+                            value={
+                                item.plan_date
+                                    ? dayjs(item.plan_date, 'DD.MM.YYYY')
+                                    : ''
+                            }
                         />
                     </div>
                     <div>

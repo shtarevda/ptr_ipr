@@ -203,7 +203,10 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                                 handleSelectProcess(value)
                             }}
                             options={[
-                                { value: 'Оценка 360', label: 'Оценка 360' },
+                                {
+                                    value: 'Опрос по ценностям',
+                                    label: 'Опрос по ценностям'
+                                },
                                 {
                                     value: 'Кадровый резерв',
                                     label: 'Кадровый резерв'
