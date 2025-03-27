@@ -111,8 +111,8 @@ function getViewIPR(eduPlanID) {
                 oItem.plan_date = StrDate(task.plan_date.Value, false)
                 oItem.finish_date = StrDate(task.finish_date.Value, false)
                 oItem.state_id = task.state_id.Value
-                oItem.is_done =
-                    task.state_id.Value == 2 || task.state_id.Value == 4
+                oItem.program_status =
+                    task.state_id.Value == 2 ? 4 : task.state_id.Value
                 oItem.comment = task.comment.Value
                 oResult.programs.push(oItem)
                 i++

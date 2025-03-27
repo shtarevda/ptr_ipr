@@ -6,11 +6,11 @@ import {
     Typography,
     Badge,
     Input,
-    Checkbox,
     Table,
     Space,
     Button,
-    Spin
+    Spin,
+    Select
 } from 'antd'
 
 import Classes from './ViewIPR.module.css'
@@ -160,7 +160,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                 type: 'field_is_done',
                 name: 'state_id'
             },
-            value: value ? 4 : 0
+            value: value
         }
         saveFieldIPR(oData, callback)
     }
@@ -237,21 +237,45 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
             )
         },
         {
-            title: 'Завершено',
-            dataIndex: 'is_done',
+            title: 'Статус',
+            dataIndex: 'program_status',
             showSorterTooltip: false,
             align: 'center',
             hidden: !viewIPR.can_edit,
             sorter: (a, b) =>
-                safeLocaleCompare(a.is_done.toString(), b.is_done.toString()),
+                safeLocaleCompare(
+                    a.program_status.toString(),
+                    b.program_status.toString()
+                ),
             render: (value, record) => (
-                <Checkbox
+                <Select
                     disabled={!viewIPR.can_edit}
+                    popupMatchSelectWidth={false}
+                    placeholder="Выбрать"
                     value={value}
-                    checked={value}
-                    onChange={(value) =>
-                        handleSaveProgramIsDone(!value.target.value, record.id)
-                    }
+                    onChange={(value) => handleSaveProgramIsDone(value, record.id)}
+                    options={[
+                        {
+                            value: 0,
+                            label: 'Назначен'
+                        },
+                        {
+                            value: 1,
+                            label: 'В процессе'
+                        },
+                        {
+                            value: 3,
+                            label: 'Не пройдено'
+                        },
+                        {
+                            value: 4,
+                            label: 'Пройдено'
+                        },
+                        {
+                            value: 6,
+                            label: 'Отменено'
+                        }
+                    ]}
                 />
             )
         }

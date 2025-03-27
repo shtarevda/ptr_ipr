@@ -147,6 +147,10 @@ try {
                             sType = oEdu.type.Value
                             sTypeName =
                                 oEdu.type == 'course' ? 'Курс' : 'Мероприятие'
+
+                            if (oEdu.type == 'course') {
+                                program.object_id = oEdu.course_id
+                            }
                             program.name = sName
                             program.type = sType
                         }
@@ -201,13 +205,13 @@ try {
                             break
                         case 'field_is_done':
                             program.Child(oData.field.name).Value = oData.value
-                            if (oData.value != 0) {
-                                program.finish_date = Date()
-                            } else {
+                            if (oData.value < 2) {
                                 program.finish_date.Clear()
+                            } else {
+                                program.finish_date = Date()
                             }
                             sReturnValue = {
-                                is_done: oData.value != 0,
+                                program_status: oData.value,
                                 finish_date: StrDate(program.finish_date, false)
                             }
                             var aTasks = ArraySelect(
@@ -216,10 +220,7 @@ try {
                             )
                             var nTasks = ArrayCount(aTasks)
                             var nDoneTasks = ArrayCount(
-                                ArraySelect(
-                                    aTasks,
-                                    'This.state_id == 4 || This.state_id == 2'
-                                )
+                                ArraySelect(aTasks, 'This.state_id > 1')
                             )
 
                             docEduPlan.TopElem.readiness_percent = StrReal(
