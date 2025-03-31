@@ -247,6 +247,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         setOpenCatalog={setOpenCatalog}
                         setCatalogType={setCatalogType}
                         setParentProgpamID={setParentProgpamID}
+                        can_delete={ipr.can_delete}
                     />
 
                     {competences.length < 4 && (

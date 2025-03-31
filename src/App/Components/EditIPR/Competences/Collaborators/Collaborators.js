@@ -15,7 +15,8 @@ function Collaborators({
     parentProgpamID,
     setCompetences,
     competences,
-    persons
+    persons,
+    can_delete
 }) {
     const [collaborators, setCollaborators] = useState(persons)
     const handleDeleteCollaborator = (program_id, parent_progpam_id, tutor_id) => {
@@ -197,15 +198,17 @@ function Collaborators({
                         />
                     </div>
                     <div>
-                        <DeleteTwoTone
-                            onClick={() => {
-                                handleDeleteCollaborator(
-                                    item.id,
-                                    parentProgpamID,
-                                    item.tutor_id
-                                )
-                            }}
-                        />
+                        {can_delete && (
+                            <DeleteTwoTone
+                                onClick={() => {
+                                    handleDeleteCollaborator(
+                                        item.id,
+                                        parentProgpamID,
+                                        item.tutor_id
+                                    )
+                                }}
+                            />
+                        )}
                     </div>
                 </Flex>
             ))}

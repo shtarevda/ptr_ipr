@@ -14,6 +14,31 @@ function addLog(value, name) {
 }
 
 /**
+ * Получить название типа задачи
+ * @param {string} тип - тип задачи
+ * @return {string}
+ */
+function getTypeName(type) {
+    var sTypeName = ''
+    switch (type) {
+        case 'learning_task':
+            sTypeName = 'Задача'
+            break
+        case 'material':
+            sTypeName = 'Развитие через других'
+            break
+        case 'org':
+            sTypeName = 'Мероприятие'
+            break
+        case 'course':
+            sTypeName = 'Курс'
+            break
+    }
+
+    return sTypeName
+}
+
+/**
  * Получить итоговый список программ ИПР
  * @param {string} eduPlanID - идентификатор плана обучения
  * @return {array}
@@ -106,6 +131,7 @@ function getViewIPR(eduPlanID) {
                 oItem.id = task.id.Value
                 oItem.parent_progpam_id = task.parent_progpam_id.Value
                 oItem.type = task.type.Value
+                oItem.type_name = getTypeName(task.type.Value)
                 oItem.name = task.name.Value
                 oItem.create_date = StrDate(task.create_date.Value, false)
                 oItem.plan_date = StrDate(task.plan_date.Value, false)

@@ -12,7 +12,8 @@ function Learnings({
     competences,
     setOpenCatalog,
     setCatalogType,
-    setParentProgpamID
+    setParentProgpamID,
+    can_delete
 }) {
     const handleDeleteLearning = (program_id, parent_progpam_id) => {
         const callback = () => {
@@ -72,11 +73,13 @@ function Learnings({
                     <div style={{ flex: 1 }}>{item.name}</div>
                     <div style={{ width: '500px' }}>{item.type_name}</div>
                     <div>
-                        <DeleteTwoTone
-                            onClick={() => {
-                                handleDeleteLearning(item.id, parentProgpamID)
-                            }}
-                        />
+                        {can_delete && (
+                            <DeleteTwoTone
+                                onClick={() => {
+                                    handleDeleteLearning(item.id, parentProgpamID)
+                                }}
+                            />
+                        )}
                     </div>
                 </Flex>
             ))}

@@ -24,15 +24,23 @@ function getIPR(eduPlanID) {
     var oItem = {}
     var oTask = {}
     if (docEduPlan != undefined) {
+        sCurPlanStatus =
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey('ipr_status').value
         oResult.id = eduPlanID
+        oResult.cur_user_id = docEduPlan.TopElem.person_id.Value
         oResult.process =
             docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                 'ipr_type'
             ).value.Value
         oResult.boss = []
+        oResult.can_delete = sCurPlanStatus == 'Черновик'
         if (docEduPlan.TopElem.tutor_id.HasValue) {
             oBoss = docEduPlan.TopElem.tutor_id.OptForeignElem
             if (oBoss != undefined) {
+                oResult.can_delete =
+                    docEduPlan.TopElem.tutor_id.Value == curUserID &&
+                    (sCurPlanStatus == 'Черновик' ||
+                        sCurPlanStatus == 'На согласовании')
                 oResult.boss.push({
                     id: String(oBoss.id),
                     fullname: String(oBoss.fullname),

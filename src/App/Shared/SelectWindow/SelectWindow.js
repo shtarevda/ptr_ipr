@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Input } from 'antd'
-import useSelectWindow from './useSelectWindow'
+
+import getParamModalWindow from './getParamModalWindow'
 
 import Classes from './SelectWindow.module.css'
 import { PlusOutlined } from '@ant-design/icons'
@@ -13,12 +14,19 @@ function SelectWindow({
     setCollaborators,
     save
 }) {
-    const [set] = useSelectWindow(
-        multiSelect,
-        collaborators,
-        setCollaborators,
-        save
-    )
+    const set = () => {
+        const param = getParamModalWindow()
+        param.callback = (arrId) => {
+            if (save) save(arrId)
+            if (setCollaborators) setCollaborators(arrId)
+        }
+        param.setRecords = () => {
+            return collaborators
+        }
+        param.multiselect = multiSelect
+        const mw = new document.petrovich.ModalWindowSelect(param)
+        mw.show()
+    }
 
     return (
         <>

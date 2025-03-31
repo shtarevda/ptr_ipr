@@ -16,7 +16,8 @@ function Competences({
     saveFieldIPR,
     setOpenCatalog,
     setCatalogType,
-    setParentProgpamID
+    setParentProgpamID,
+    can_delete
 }) {
     const handleSelectCompetence = (value, program_id) => {
         const callback = () => {
@@ -92,13 +93,15 @@ function Competences({
                         <Title level={4} style={{ marginBottom: 0 }}>
                             Компетенция {index + 1}
                         </Title>
-                        <div className={Classes.trash}>
-                            <DeleteOutlined
-                                onClick={() =>
-                                    handleDeleteCompetence(competence.id)
-                                }
-                            />
-                        </div>
+                        {can_delete && (
+                            <div className={Classes.trash}>
+                                <DeleteOutlined
+                                    onClick={() =>
+                                        handleDeleteCompetence(competence.id)
+                                    }
+                                />
+                            </div>
+                        )}
                     </Flex>
                     <Space size={8}>
                         <div className={Classes.fieldLabel}>Компетенция:</div>
@@ -189,6 +192,7 @@ function Competences({
                                                 parentProgpamID={competence.id}
                                                 setCompetences={setCompetences}
                                                 competences={competences}
+                                                can_delete={can_delete}
                                             />
                                         </div>
                                     )
@@ -217,6 +221,7 @@ function Competences({
                                                 parentProgpamID={competence.id}
                                                 setCompetences={setCompetences}
                                                 competences={competences}
+                                                can_delete={can_delete}
                                             />
                                         </div>
                                     )
@@ -244,6 +249,7 @@ function Competences({
                                                 setParentProgpamID={
                                                     setParentProgpamID
                                                 }
+                                                can_delete={can_delete}
                                             />
                                         </div>
                                     )

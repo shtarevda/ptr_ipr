@@ -26,11 +26,25 @@ try {
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                     'ipr_status'
                 ).value = 'В процессе'
+                tools.create_notification(
+                    'approval_boss_ipr_ok',
+                    docEduPlan.TopElem.person_id,
+                    '/_wt/ipr#ipr_view/' + eduPlanID
+                )
                 break
             case 'on_approval':
-                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
-                    'ipr_status'
-                ).value = 'На согласовании'
+                if (docEduPlan.TopElem.tutor_id.HasValue) {
+                    docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                        'ipr_status'
+                    ).value = 'На согласовании'
+                    tools.create_notification(
+                        'approval_boss_ipr',
+                        docEduPlan.TopElem.tutor_id,
+                        '/_wt/ipr#ipr_view/' + eduPlanID,
+                        docEduPlan.TopElem.person_id
+                    )
+                }
+
                 break
             case 'custom':
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(

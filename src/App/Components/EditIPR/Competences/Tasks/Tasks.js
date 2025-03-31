@@ -11,7 +11,8 @@ function Tasks({
     saveFieldIPR,
     parentProgpamID,
     setCompetences,
-    competences
+    competences,
+    can_delete
 }) {
     const handleAddTask = (value, program_id, parent_progpam_id) => {
         const callback = (value) => {
@@ -178,11 +179,13 @@ function Tasks({
                         />
                     </div>
                     <div>
-                        <DeleteTwoTone
-                            onClick={() => {
-                                handleDeleteTask(task.id, parentProgpamID)
-                            }}
-                        />
+                        {can_delete && (
+                            <DeleteTwoTone
+                                onClick={() => {
+                                    handleDeleteTask(task.id, parentProgpamID)
+                                }}
+                            />
+                        )}
                     </div>
                 </Flex>
             ))}
