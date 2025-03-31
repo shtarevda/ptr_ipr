@@ -12,8 +12,10 @@ function Learnings({
     competences,
     setOpenCatalog,
     setCatalogType,
+    setCurCompetenceID,
     setParentProgpamID,
-    can_delete
+    can_delete,
+    comp_id
 }) {
     const handleDeleteLearning = (program_id, parent_progpam_id) => {
         const callback = () => {
@@ -45,6 +47,7 @@ function Learnings({
                     className={Classes.addCalalogButton}
                     onClick={() => {
                         setCatalogType('course')
+                        setCurCompetenceID(comp_id)
                         setOpenCatalog(true)
                         setParentProgpamID(parentProgpamID)
                     }}>
@@ -56,6 +59,7 @@ function Learnings({
                     className={Classes.addCalalogButton}
                     onClick={() => {
                         setCatalogType('org')
+                        setCurCompetenceID(comp_id)
                         setOpenCatalog(true)
                         setParentProgpamID(parentProgpamID)
                     }}>

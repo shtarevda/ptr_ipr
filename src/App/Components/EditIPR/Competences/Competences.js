@@ -16,6 +16,7 @@ function Competences({
     saveFieldIPR,
     setOpenCatalog,
     setCatalogType,
+    setCurCompetenceID,
     setParentProgpamID,
     can_delete
 }) {
@@ -246,10 +247,14 @@ function Competences({
                                                 competences={competences}
                                                 setOpenCatalog={setOpenCatalog}
                                                 setCatalogType={setCatalogType}
+                                                setCurCompetenceID={
+                                                    setCurCompetenceID
+                                                }
                                                 setParentProgpamID={
                                                     setParentProgpamID
                                                 }
                                                 can_delete={can_delete}
+                                                comp_id={competence.comp_id}
                                             />
                                         </div>
                                     )

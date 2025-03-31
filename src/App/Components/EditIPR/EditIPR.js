@@ -26,6 +26,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
     const [competences, setCompetences] = useState([])
     const [openCatalog, setOpenCatalog] = useState(false)
     const [catalogType, setCatalogType] = useState('')
+    const [curCompetenceID, setCurCompetenceID] = useState('')
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [parentProgpamID, setParentProgpamID] = useState('')
     const [boss, setBoss] = useState([])
@@ -247,6 +248,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         saveFieldIPR={saveFieldIPR}
                         setOpenCatalog={setOpenCatalog}
                         setCatalogType={setCatalogType}
+                        setCurCompetenceID={setCurCompetenceID}
                         setParentProgpamID={setParentProgpamID}
                         can_delete={ipr.can_delete}
                     />
@@ -297,6 +299,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                                 setCompetences={setCompetences}
                                 saveFieldIPR={saveFieldIPR}
                                 parentProgpamID={parentProgpamID}
+                                curCompetenceID={curCompetenceID}
                             />
                         </Modal>
                     </Space>

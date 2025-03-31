@@ -30,7 +30,8 @@ function Catalog({
     competences,
     setCompetences,
     saveFieldIPR,
-    parentProgpamID
+    parentProgpamID,
+    curCompetenceID
 }) {
     const [learnings, setLearnings] = useState([])
     const [open, setOpen] = useState(false)
@@ -86,7 +87,11 @@ function Catalog({
         getLearnings()
     }, [])
 
-    const catalogItems = learnings.filter((item) => item.type === catalogType)
+    const catalogItems = learnings.filter(
+        (item) =>
+            item.type === catalogType &&
+            String(item.competence_ids).includes(curCompetenceID)
+    )
 
     return (
         <Flex gap={24} wrap style={{ position: 'relative' }}>
