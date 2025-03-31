@@ -221,6 +221,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                             save={tutorEdit}
                             collaborators={boss}
                             setCollaborators={setBoss}
+                            cur_user_id={ipr.cur_user_id}
                         />
                     </Space>
                     <Space size={8}>

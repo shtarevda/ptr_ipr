@@ -12,7 +12,8 @@ function SelectWindow({
     type = 'input',
     collaborators,
     setCollaborators,
-    save
+    save,
+    cur_user_id = ''
 }) {
     const set = () => {
         const param = getParamModalWindow()
@@ -24,6 +25,8 @@ function SelectWindow({
             return collaborators
         }
         param.multiselect = multiSelect
+        param.where =
+            "catalog.is_dismiss=0 AND catalog.id != '" + cur_user_id + "'"
         const mw = new document.petrovich.ModalWindowSelect(param)
         mw.show()
     }

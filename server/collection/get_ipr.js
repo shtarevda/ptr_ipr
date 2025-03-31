@@ -38,9 +38,11 @@ function getIPR(eduPlanID) {
             oBoss = docEduPlan.TopElem.tutor_id.OptForeignElem
             if (oBoss != undefined) {
                 oResult.can_delete =
-                    docEduPlan.TopElem.tutor_id.Value == curUserID &&
-                    (sCurPlanStatus == 'Черновик' ||
-                        sCurPlanStatus == 'На согласовании')
+                    (docEduPlan.TopElem.tutor_id.Value == curUserID &&
+                        (sCurPlanStatus == 'Черновик' ||
+                            sCurPlanStatus == 'На согласовании')) ||
+                    (docEduPlan.TopElem.person_id.Value == curUserID &&
+                        sCurPlanStatus == 'Черновик')
                 oResult.boss.push({
                     id: String(oBoss.id),
                     fullname: String(oBoss.fullname),
