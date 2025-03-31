@@ -4,6 +4,17 @@ try {
     MESSAGE = ''
     RESULT = {}
 
+    function setBossEdit() {
+        if (
+            docEduPlan.TopElem.tutor_id.HasValue &&
+            docEduPlan.TopElem.tutor_id.Value == curUserID
+        ) {
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                'ipr_boss_edit'
+            ).value = true
+        }
+    }
+
     var eduPlanID = OptInt(plan_id, undefined)
     if (eduPlanID == undefined) {
         throw 'Не указан id плана обучения'
@@ -26,8 +37,17 @@ try {
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                     'ipr_status'
                 ).value = 'В процессе'
+                sNotifCode = 'approval_boss_ipr_ok'
+                bBossEdit = tools_web.is_true(
+                    docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                        'ipr_boss_edit'
+                    ).value
+                )
+                if (bBossEdit) {
+                    sNotifCode = 'approval_boss_ipr_ok_edit'
+                }
                 tools.create_notification(
-                    'approval_boss_ipr_ok',
+                    sNotifCode,
                     docEduPlan.TopElem.person_id,
                     '/_wt/ipr#ipr_view/' + eduPlanID
                 )
@@ -37,6 +57,9 @@ try {
                     docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                         'ipr_status'
                     ).value = 'На согласовании'
+                    docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                        'ipr_boss_edit'
+                    ).value = false
                     tools.create_notification(
                         'approval_boss_ipr',
                         docEduPlan.TopElem.tutor_id,
@@ -44,14 +67,15 @@ try {
                         docEduPlan.TopElem.person_id
                     )
                 }
-
                 break
             case 'custom':
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                     oData.field
                 ).value = oData.value
+                setBossEdit()
                 break
             case 'field':
+                setBossEdit()
                 docEduPlan.TopElem.Child(oData.field).Value = oData.value
                 break
             case 'competence':
@@ -67,6 +91,7 @@ try {
                     collaborators: { persons: [], items: [] },
                     learnings: []
                 }
+                setBossEdit()
                 break
             case 'delete_program':
                 for (elem in ArraySelect(
@@ -76,6 +101,7 @@ try {
                     docEduPlan.TopElem.programs.DeleteChildByKey(elem.id)
                 }
                 docEduPlan.TopElem.programs.DeleteChildByKey(oData.value)
+                setBossEdit()
                 break
             case 'multi_collaborators_program':
                 var program = undefined
@@ -102,7 +128,7 @@ try {
                         program = docEduPlan.TopElem.programs.AddChild()
                         program.type = oData.field.field_type
                         program.parent_progpam_id = oData.field.parent_progpam_id
-                        program.name = 'Развитие через других: ' + elem.fullname
+                        program.name = elem.fullname
                         program.create_date = Date()
                         program.plan_date = docEduPlan.TopElem.plan_date
                         program.tutor_id = elem.id
@@ -111,7 +137,7 @@ try {
                             id: program.id.Value,
                             parent_progpam_id: oData.field.parent_progpam_id,
                             type: oData.field.field_type,
-                            name: 'Развитие через других: ' + elem.fullname,
+                            name: elem.fullname,
                             create_date: StrDate(program.create_date, false),
                             plan_date: StrDate(
                                 docEduPlan.TopElem.plan_date,
@@ -143,6 +169,7 @@ try {
                         sReturnValue.push(_sReturnValue)
                     }
                 }
+                setBossEdit()
                 break
             case 'program':
                 var program = undefined
@@ -267,6 +294,7 @@ try {
                             break
                     }
                 }
+                setBossEdit()
                 break
             default:
                 bOK = false

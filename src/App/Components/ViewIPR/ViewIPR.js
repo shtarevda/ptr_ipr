@@ -203,6 +203,12 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
             sorter: (a, b) => safeLocaleCompare(a.name, b.name)
         },
         {
+            title: 'Тип задачи',
+            dataIndex: 'type_name',
+            showSorterTooltip: false,
+            sorter: (a, b) => safeLocaleCompare(a.type_name, b.type_name)
+        },
+        {
             title: 'Планируется завершить',
             dataIndex: 'plan_date',
             width: viewIPR.can_edit ? '100px' : '',
