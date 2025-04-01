@@ -30,7 +30,7 @@ function getLearnings() {
                 em2.data.value('(/education_method/resource_id)[1]', 'varchar(100)') AS resource_id,  \
                 em2.data.value('(/education_method/comment)[1]', 'varchar(max)') AS short_desc, \
                 STUFF(( \
-                    SELECT ',' + T.c.value('.', 'varchar(max)') \
+                    SELECT ', ' + T.c.value('.', 'varchar(max)') \
                     FROM em2.data.nodes('//competences/competence/competence_id') AS T(c) \
                     FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 2, '') AS competence_ids \
             FROM education_methods em  \

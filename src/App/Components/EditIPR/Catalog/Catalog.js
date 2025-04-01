@@ -54,7 +54,7 @@ function Catalog({
         if (!res.data.success || res.data.data.results.length == 0) return []
         const result = res.data.data.results
         setLearnings(result)
-        console.log(result)
+        //console.log(result)
     }
 
     const handleAddLearning = (value, program_id, parent_progpam_id) => {

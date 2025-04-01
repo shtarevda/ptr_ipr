@@ -13,6 +13,22 @@ function addLog(value, name) {
     LogEvent(sLogName, value)
 }
 
+function getProcessesInCurYear(userId) {
+    var sSQL =
+        ' \
+    declare @person_id bigint = ' +
+        OptInt(userId) +
+        "; \
+            SELECT \
+                CAST(ep.id AS varchar(20)) AS id, \
+                ep2.data.value('(/education_plan/custom_elems/custom_elem[name=''ipr_type'']/value)[1]', 'varchar(500)') AS process_name \
+            FROM education_plans ep \
+            INNER JOIN education_plan ep2 ON ep2.id = ep.id \
+            WHERE ep.code = 'ipr' AND ep.person_id = @person_id AND YEAR(ep.create_date) = YEAR(GETDATE()) \
+    "
+    return ArraySelectAll(XQuery('sql: ' + sSQL))
+}
+
 /**
  * Получить ИПР
  * @param {string} eduPlanID - идентификатор плана обучения
@@ -23,10 +39,20 @@ function getIPR(eduPlanID) {
     var oResult = {}
     var oItem = {}
     var oTask = {}
+    var aProcesses = []
     if (docEduPlan != undefined) {
         sCurPlanStatus =
             docEduPlan.TopElem.custom_elems.ObtainChildByKey('ipr_status').value
+        aProcesses = getProcessesInCurYear(docEduPlan.TopElem.person_id.Value)
         oResult.id = eduPlanID
+        oResult.has_ass_process =
+            ArrayOptFind(
+                aProcesses,
+                'This.process_name == "Опрос по ценностям"'
+            ) != undefined
+        oResult.has_reserve_process =
+            ArrayOptFind(aProcesses, 'This.process_name == "Кадровый резерв"') !=
+            undefined
         oResult.cur_user_id = docEduPlan.TopElem.person_id.Value
         oResult.process =
             docEduPlan.TopElem.custom_elems.ObtainChildByKey(

@@ -49,7 +49,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
         const result = res.data.data.results[0]
         setViewIPR(result)
         setMainComment(result.comment)
-        console.log(result)
+        //console.log(result)
     }
 
     const saveFieldIPR = async (oData, afterCallback) => {
@@ -76,7 +76,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
         if (!aResult.success) {
             return
         }
-        console.log(aResult)
+        //console.log(aResult)
         if (afterCallback) {
             afterCallback(aResult.value)
         }

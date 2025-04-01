@@ -4,10 +4,9 @@ export default () => {
     const [isLoading, setIsLoading] = useState(false)
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
-    
+
     const [payload, setPayload] = useState(null)
     const [url, setUrl] = useState(null)
-
 
     const doFetch = (url = '', payload = {}) => {
         setPayload(payload)
@@ -17,34 +16,30 @@ export default () => {
         setResponse(null)
     }
 
-
-    useEffect( () => {
-        if ( !isLoading ) {
+    useEffect(() => {
+        if (!isLoading) {
             return
-        } 
+        }
 
         getFetchData(url, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
             body: JSON.stringify(payload)
         })
-        .then(res => {
-            setIsLoading(false)
-            setResponse(res)
-        })
-        .catch(err => {
-            // console.log('err', err)
-            setIsLoading(false)
-            setError(err)
-        })
-
+            .then((res) => {
+                setIsLoading(false)
+                setResponse(res)
+            })
+            .catch((err) => {
+                // console.log('err', err)
+                setIsLoading(false)
+                setError(err)
+            })
     }, [isLoading])
 
-
-    return [{isLoading, response, error}, doFetch]
+    return [{ isLoading, response, error }, doFetch]
 }
 
- 
 /**
  * Функция обращения к серверу при помощи featch
  * @param {string} url
@@ -61,7 +56,6 @@ const getFetchData = async (url, options) => {
     return resBody.data
 }
 
-
 /**
  * Функция обращения к серверу при помощи jQuery
  * @param {string} url
@@ -74,6 +68,6 @@ const getDataWithJQuery = (url, options) => {
         data: options.body,
         cache: false,
         type: options.method,
-        dataType: 'JSON',
+        dataType: 'JSON'
     })
 }

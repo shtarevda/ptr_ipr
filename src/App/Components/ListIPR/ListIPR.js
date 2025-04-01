@@ -25,6 +25,8 @@ const safeLocaleCompare = (a, b) => {
 
 const Title = Typography.Title
 
+const currentYear = new Date().getFullYear()
+
 function ListIPR({ settings, changeRoute }) {
     const columns = [
         {
@@ -133,6 +135,21 @@ function ListIPR({ settings, changeRoute }) {
             ? listIPR.filter((ipr) => ipr.start_year == curYear)
             : listIPR
 
+    const assessmentIPR = listIPR
+        ? listIPR.find(
+              (ipr) =>
+                  ipr.start_year == currentYear &&
+                  ipr.process_name == 'Опрос по ценностям'
+          )
+        : false
+    const reserveIPR = listIPR
+        ? listIPR.find(
+              (ipr) =>
+                  ipr.start_year == currentYear &&
+                  ipr.process_name == 'Кадровый резерв'
+          )
+        : false
+
     const handleSelectChange = (value) => {
         setCurYear(value)
     }
@@ -180,13 +197,15 @@ function ListIPR({ settings, changeRoute }) {
                     </Flex>
                 ))}
 
-                <Button
-                    type="primary"
-                    onClick={() => {
-                        createIPR()
-                    }}>
-                    Добавить ИПР
-                </Button>
+                {!loading && (!assessmentIPR || !reserveIPR) && (
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            createIPR()
+                        }}>
+                        Добавить ИПР
+                    </Button>
+                )}
             </Flex>
             {loading ? (
                 <Spin tip="Загрузка...">

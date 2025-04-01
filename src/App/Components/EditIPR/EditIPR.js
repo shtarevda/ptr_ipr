@@ -52,7 +52,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
         setIPR(result)
         setBoss(result.boss)
         setCompetences(result.competences)
-        console.log(result)
+        //console.log(result)
     }
 
     const deleteIPR = async () => {
@@ -100,7 +100,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
         if (!aResult.success) {
             return
         }
-        console.log(aResult)
+        //console.log(aResult)
         if (afterCallback) {
             afterCallback(aResult.value)
         }
@@ -171,6 +171,17 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
         getIPR()
     }, [])
 
+    const processOptions = []
+    if (!ipr?.has_ass_process) {
+        processOptions.push({
+            value: 'Опрос по ценностям',
+            label: 'Опрос по ценностям'
+        })
+    }
+    if (!ipr?.has_reserve_process) {
+        processOptions.push({ value: 'Кадровый резерв', label: 'Кадровый резерв' })
+    }
+
     return (
         <div>
             <Flex vertical gap={24}>
@@ -203,16 +214,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                             onChange={(value) => {
                                 handleSelectProcess(value)
                             }}
-                            options={[
-                                {
-                                    value: 'Опрос по ценностям',
-                                    label: 'Опрос по ценностям'
-                                },
-                                {
-                                    value: 'Кадровый резерв',
-                                    label: 'Кадровый резерв'
-                                }
-                            ]}></Select>
+                            options={processOptions}></Select>
                     </Space>
                     <Space size={8}>
                         <div className={Classes.fieldLabel}>Руководитель:</div>
