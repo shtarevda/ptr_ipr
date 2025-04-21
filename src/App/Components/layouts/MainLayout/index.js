@@ -5,17 +5,14 @@ import EditIPR from '@Components/EditIPR/EditIPR'
 import ViewIPR from '../../ViewIPR/ViewIPR'
 
 const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
-    // useEffect(() => {
-    //     if (currentRoute == 'home' && window.location.hash == '') {
-    //         changeRoute('')
-    //     }
-    //     console.log(currentRoute)
-    //     console.log(window.location.hash)
-    // }, [window.location.hash])
     return (
         <div className={ClassesGlobal.container}>
-            {currentRoute == 'home' && (
-                <ListIPR settings={settings} changeRoute={changeRoute} />
+            {(currentRoute == 'home' || currentRoute == 'my_persons') && (
+                <ListIPR
+                    settings={settings}
+                    changeRoute={changeRoute}
+                    currentRoute={currentRoute}
+                />
             )}
             {currentRoute == 'ipr_edit' && (
                 <EditIPR

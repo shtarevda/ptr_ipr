@@ -3,6 +3,7 @@ import MainLayout from './Components/layouts/MainLayout'
 import useRoute from '@hooks/useRoute'
 import { ConfigProvider } from 'antd'
 import ru_RU from 'antd/locale/ru_RU'
+import Menu from './Components/Menu/Menu'
 
 function App({ settings }) {
     const {

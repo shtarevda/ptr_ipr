@@ -3,6 +3,21 @@
     padding: 24px;
     border-radius: 8px;
     background: #ebf4f8;
+    :global(.ant-tabs-tab) {
+        width: 100%;
+    }
+    :global(.ant-tabs-nav-list) {
+        width: 100%;
+    }
+    :global(.ant-tabs-content-holder) {
+        background-color: #fff;
+        border-right: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+        border-left: 1px solid #f0f0f0;
+    }
+    :global(.ant-tabs-tab-btn) {
+        width: 100%;
+    }
 }
 .fieldLabel {
     width: 173px;
@@ -18,21 +33,4 @@
     border-radius: 100px;
     border: 1px dashed #d9d9d9;
     background: #fff;
-}
-
-:global(.ant-tabs-tab) {
-    width: 100%;
-}
-
-:global(.ant-tabs-nav-list) {
-    width: 100%;
-}
-:global(.ant-tabs-content-holder) {
-    background-color: #fff;
-    border-right: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
-    border-left: 1px solid #f0f0f0;
-}
-:global(.ant-tabs-tab-btn) {
-    width: 100%;
 }

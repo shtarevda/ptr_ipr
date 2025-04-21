@@ -303,7 +303,11 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                                 href: '',
                                 onClick: (e) => {
                                     e.preventDefault()
-                                    changeRoute('')
+                                    changeRoute(
+                                        viewIPR.cur_user_is_boss
+                                            ? 'my_persons'
+                                            : 'home'
+                                    )
                                 }
                             },
                             {
@@ -366,7 +370,15 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                             }>
                             Редактировать
                         </Button>
-                        <Button type="default" onClick={() => changeRoute('')}>
+                        <Button
+                            type="default"
+                            onClick={() =>
+                                changeRoute(
+                                    viewIPR.cur_user_is_boss
+                                        ? 'my_persons'
+                                        : 'home'
+                                )
+                            }>
                             Вернуться к списку
                         </Button>
                     </Space>

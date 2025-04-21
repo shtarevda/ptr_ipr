@@ -7,7 +7,7 @@ function LoadConfig({ settings, children }) {
     const [{ isLoading, response, error }, doFetch] = useFetch()
 
     useEffect(() => {
-        doFetch('/custom_web_template.html?object_id=7481996879092722926', {
+        doFetch('/custom_web_template.html?object_id=7148214962165246509', {
             action: 'exec',
             codes: settings
         })
