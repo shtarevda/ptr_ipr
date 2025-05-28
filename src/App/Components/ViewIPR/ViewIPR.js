@@ -263,7 +263,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                     options={[
                         {
                             value: 0,
-                            label: 'Назначен'
+                            label: 'Согласован'
                         },
                         {
                             value: 1,

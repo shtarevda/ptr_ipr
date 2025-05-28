@@ -21,6 +21,7 @@
 }
 .fieldLabel {
     width: 173px;
+    flex: none;
 }
 
 .trash {

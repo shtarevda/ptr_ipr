@@ -143,19 +143,19 @@ function Collaborators({
                 setCollaborators={setCollaborators}
                 save={collaboratorsEdit}
             />
+            {items.length == 0 && (
+                <div className={Classes.info}>
+                    Опишите задачу и выберите сотрудника (-ов), которые смогут
+                    поделиться опытом, предоставить обратную связь Вам с точки
+                    зрения данной компетенции и рекомендации по развитию
+                </div>
+            )}
             {items.map((item, index) => (
                 <Flex
                     gap={16}
                     align="center"
                     className={Classes.collaboratorWrap}
                     key={index}>
-                    <Flex vertical style={{ width: '30%' }}>
-                        <div>{item.fullname}</div>
-                        <div className={Classes.positionName}>
-                            {item.position_name}
-                        </div>
-                    </Flex>
-
                     <div style={{ flex: 1 }}>
                         <TextArea
                             placeholder="Опишите, чем данный сотрудник будет вам полезен."
@@ -178,6 +178,13 @@ function Collaborators({
                             }}
                         />
                     </div>
+                    <Flex vertical style={{ width: '30%' }}>
+                        <div>{item.fullname}</div>
+                        <div className={Classes.positionName}>
+                            {item.position_name}
+                        </div>
+                    </Flex>
+
                     <div>
                         <DatePicker
                             onChange={(date, dateString) => {

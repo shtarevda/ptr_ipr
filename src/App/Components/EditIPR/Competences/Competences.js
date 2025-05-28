@@ -45,6 +45,31 @@ function Competences({
         saveFieldIPR(oData, callback)
     }
 
+    const handleResult = (value, program_id) => {
+        const callback = () => {
+            setCompetences(
+                competences.map((item) => {
+                    if (item.id === program_id) {
+                        return { ...item, result: value }
+                    }
+                    return item
+                })
+            )
+        }
+
+        const oData = {
+            type: 'program',
+            field: {
+                program_id: program_id,
+                parent_progpam_id: '',
+                type: 'custom',
+                name: 'ipr_result'
+            },
+            value: value
+        }
+        saveFieldIPR(oData, callback)
+    }
+
     const handleTarget = (value, program_id) => {
         const callback = () => {
             setCompetences(
@@ -153,7 +178,7 @@ function Competences({
                             ]}
                         />
                     </Space>
-                    <Space size={8}>
+                    <Flex gap={8} align="center">
                         <div className={Classes.fieldLabel}>Цель развития:</div>
                         <TextArea
                             placeholder="Опишите цель кратко"
@@ -162,12 +187,29 @@ function Competences({
                                 handleTarget(value.target.value, competence.id)
                             }
                             defaultValue={competence.comment}
-                            style={{ width: '400px' }}
                             onClear={(value) => {
                                 handleTarget(value, competence.id)
                             }}
                         />
-                    </Space>
+                    </Flex>
+
+                    <Flex gap={8} align="center">
+                        <div className={Classes.fieldLabel}>
+                            Ожидаемый результат:
+                        </div>
+                        <TextArea
+                            placeholder="Опишите ожидаемый результат кратко"
+                            allowClear
+                            onBlur={(value) =>
+                                handleResult(value.target.value, competence.id)
+                            }
+                            defaultValue={competence.result}
+                            onClear={(value) => {
+                                handleResult(value, competence.id)
+                            }}
+                        />
+                    </Flex>
+
                     <Flex vertical gap={16}>
                         <div className={Classes.fieldLabel}>Методы развития:</div>
                         <Tabs

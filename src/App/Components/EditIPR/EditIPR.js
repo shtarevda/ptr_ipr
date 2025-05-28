@@ -272,9 +272,13 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                             }}>
                             Сохранить
                         </Button>
-                        <Button type="default" onClick={showConfirmDeleteModal}>
-                            Удалить ИПР
-                        </Button>
+                        {ipr.can_delete && (
+                            <Button
+                                type="default"
+                                onClick={showConfirmDeleteModal}>
+                                Удалить ИПР
+                            </Button>
+                        )}
                         <Modal
                             title="Подтвердите действие"
                             open={openConfirmDelete}

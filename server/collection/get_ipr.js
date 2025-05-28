@@ -89,6 +89,8 @@ function getIPR(eduPlanID) {
             oItem.id = elem.id.Value
             oItem.name = elem.name.Value
             oItem.comment = elem.comment.Value
+            oItem.result =
+                elem.custom_elems.ObtainChildByKey('ipr_result').value.Value
             comp_id = OptInt(
                 elem.custom_elems.ObtainChildByKey('comp_id').value.Value,
                 ''

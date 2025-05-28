@@ -4,13 +4,27 @@ try {
     MESSAGE = ''
     RESULT = {}
 
-    function setBossEdit() {
+    function setEdit() {
+        //если отредактировал руководитель
         if (
             docEduPlan.TopElem.tutor_id.HasValue &&
             docEduPlan.TopElem.tutor_id.Value == curUserID
         ) {
             docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                 'ipr_boss_edit'
+            ).value = true
+        }
+        //если отредактировал сотрудник после согласования
+        if (
+            docEduPlan.TopElem.tutor_id.HasValue &&
+            docEduPlan.TopElem.tutor_id.Value != curUserID &&
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey('ipr_status').value !=
+                'Черновик' &&
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey('ipr_status').value !=
+                'На согласовании'
+        ) {
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                'ipr_person_edit'
             ).value = true
         }
     }
@@ -72,10 +86,10 @@ try {
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                     oData.field
                 ).value = oData.value
-                setBossEdit()
+                setEdit()
                 break
             case 'field':
-                setBossEdit()
+                setEdit()
                 docEduPlan.TopElem.Child(oData.field).Value = oData.value
                 break
             case 'competence':
@@ -91,7 +105,7 @@ try {
                     collaborators: { persons: [], items: [] },
                     learnings: []
                 }
-                setBossEdit()
+                setEdit()
                 break
             case 'delete_program':
                 for (elem in ArraySelect(
@@ -101,7 +115,7 @@ try {
                     docEduPlan.TopElem.programs.DeleteChildByKey(elem.id)
                 }
                 docEduPlan.TopElem.programs.DeleteChildByKey(oData.value)
-                setBossEdit()
+                setEdit()
                 break
             case 'multi_collaborators_program':
                 var program = undefined
@@ -169,7 +183,7 @@ try {
                         sReturnValue.push(_sReturnValue)
                     }
                 }
-                setBossEdit()
+                setEdit()
                 break
             case 'program':
                 var program = undefined
@@ -294,7 +308,7 @@ try {
                             break
                     }
                 }
-                setBossEdit()
+                setEdit()
                 break
             default:
                 bOK = false
