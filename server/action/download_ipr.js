@@ -30,10 +30,6 @@ try {
         false
     ])
 
-    //_res = CallServerMethod( 'tools', 'process_print_form', [ 'certificate/index.html', RValue( doc.TopElem.Doc.DocID ), true ]  );
-    //fldType = formDoc.type.ForeignElem;
-    //CopyUrl(_filemname, _res)
-
     url_temp_folder = 'x-local://wt/web/custom_projects/ipr/print_form'
     ObtainDirectory(url_temp_folder)
     temp_folder = UrlToFilePath(url_temp_folder)
@@ -44,7 +40,7 @@ try {
     RESULT = {
         link: StrReplace(
             StrReplace(temp_folder + '\\' + file_name, '\\', '/'),
-            'C:/WebSoft/WebTutorServer/wt/web',
+            'C:/Program Files/WebSoft/WebTutorServer/wt/web',
             ''
         ),
         filename: file_name,

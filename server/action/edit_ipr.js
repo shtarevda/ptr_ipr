@@ -65,6 +65,9 @@ try {
                     docEduPlan.TopElem.person_id,
                     '/_wt/ipr#ipr_view/' + eduPlanID
                 )
+                var path = 'x-local://wt/web/custom_projects/ipr/ipr_lib.js'
+                var LIB = OpenCodeLib(path).clear()
+                LIB.activateCoursesToPerson(eduPlanID, docEduPlan)
                 break
             case 'on_approval':
                 if (docEduPlan.TopElem.tutor_id.HasValue) {

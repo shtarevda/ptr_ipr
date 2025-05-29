@@ -10,7 +10,7 @@ try {
     }
 
     var path = 'x-local://wt/web/custom_projects/ipr/ipr_lib.js'
-    var LIB = OpenCodeLib(path).clear()
+    var LIB = OpenCodeLib(path) //.clear()
     var bOK = LIB.sendNotifToBoss(eduPlanID)
 
     RESULT = {

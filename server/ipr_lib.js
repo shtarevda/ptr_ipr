@@ -201,34 +201,73 @@ function sendNotifToBoss(eduPlanID) {
         addLog('Не передан ID плана обучения')
         return false
     }
-    var oEduPlan = ArrayOptFirstElem(
-        XQuery(
-            'for $elem in education_plans where $elem/id = ' +
-                eduPlanID +
-                ' return $elem'
+
+    docEduPlan = tools.open_doc(eduPlanID)
+    if (docEduPlan != undefined && docEduPlan.TopElem.tutor_id.HasValue) {
+        bChangesFlag =
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                'ipr_person_edit'
+            ).value
+        if (tools_web.is_true(bChangesFlag)) {
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                'ipr_person_edit'
+            ).value = false
+            tools.create_notification(
+                'approval_boss_ipr_change',
+                docEduPlan.TopElem.tutor_id,
+                '/_wt/ipr#ipr_view/' + eduPlanID,
+                docEduPlan.TopElem.person_id
+            )
+            docEduPlan.Save()
+            bOK = true
+        }
+    }
+    return bOK
+}
+
+/**
+ * Назначение курсов по плану обучения
+ * @param {string} eduPlanID - идентификатор плана обучения
+ * @param {XmElem} eduPlanID - карточка плана обучения
+ * @return {boolean}
+ */
+function activateCoursesToPerson(eduPlanID, docEduPlan) {
+    var bOK = false
+    if (eduPlanID == undefined || OptInt(eduPlanID, 0) == 0) {
+        addLog('Не передан ID плана обучения')
+        return false
+    }
+    if (docEduPlan == undefined) {
+        docEduPlan = tools.open_doc(eduPlanID)
+    }
+
+    if (docEduPlan != undefined) {
+        aCourses = ArraySelect(
+            docEduPlan.TopElem.programs,
+            'This.type == "course"'
         )
-    )
-    if (oEduPlan != undefined) {
-        docEduPlan = tools.open_doc(oEduPlan.id)
-        if (docEduPlan != undefined && docEduPlan.TopElem.tutor_id.HasValue) {
-            bChangesFlag =
-                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
-                    'ipr_person_edit'
-                ).value
-            if (tools_web.is_true(bChangesFlag)) {
-                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
-                    'ipr_person_edit'
-                ).value = false
-                tools.create_notification(
-                    'approval_boss_ipr_change',
-                    docEduPlan.TopElem.tutor_id,
-                    '/_wt/ipr#ipr_view/' + eduPlanID,
-                    docEduPlan.TopElem.person_id
-                )
+        for (program in aCourses) {
+            if (!program.result_object_id.HasValue) {
+                oPerson = {
+                    iPersonID: docEduPlan.TopElem.person_id,
+                    iCourseID: program.object_id,
+                    iDuration: 365,
+                    iEducationPlanID: eduPlanID,
+                    bSkipDismissed: true,
+                    bMissOnlySuccessLearning: true,
+                    bSelfEnrolled: true
+                }
+                _course_learning = tools.activate_course_to_person(oPerson)
+                program.result_type = 'active_learning'
+                try {
+                    program.result_object_id = _course_learning.DocID
+                } catch (err) {
+                    program.result_object_id = _course_learning
+                }
                 docEduPlan.Save()
-                bOK = true
             }
         }
     }
+
     return bOK
 }
