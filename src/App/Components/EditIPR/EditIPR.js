@@ -76,6 +76,24 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
         changeRoute('')
     }
 
+    const saveButtonIPR = async () => {
+        const requestBody = {
+            action: 'action',
+            code: 'save_button_ipr',
+            wvars: {
+                ...settings,
+                plan_id: curSubRoutes[0]
+            }
+        }
+
+        const res = await axios.post(
+            'custom_web_template.html?object_id=' + String(settings.controller_id),
+            requestBody
+        )
+
+        changeRoute('ipr_view/' + curSubRoutes[0])
+    }
+
     const saveFieldIPR = async (oData, afterCallback) => {
         const requestBody = {
             action: 'action',
@@ -268,7 +286,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         <Button
                             type="primary"
                             onClick={() => {
-                                changeRoute('ipr_view/' + curSubRoutes[0])
+                                saveButtonIPR()
                             }}>
                             Сохранить
                         </Button>

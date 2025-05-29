@@ -189,3 +189,46 @@ function setEduPlanResult(docEduPlan) {
 
     return docEduPlan
 }
+
+/**
+ * Отправить уведомление руководителю, если были изменения плана после согласования
+ * @param {string} eduPlanID - идентификатор плана обучения
+ * @return {boolean}
+ */
+function sendNotifToBoss(eduPlanID) {
+    var bOK = false
+    if (eduPlanID == undefined || OptInt(eduPlanID, 0) == 0) {
+        addLog('Не передан ID плана обучения')
+        return false
+    }
+    var oEduPlan = ArrayOptFirstElem(
+        XQuery(
+            'for $elem in education_plans where $elem/id = ' +
+                eduPlanID +
+                ' return $elem'
+        )
+    )
+    if (oEduPlan != undefined) {
+        docEduPlan = tools.open_doc(oEduPlan.id)
+        if (docEduPlan != undefined && docEduPlan.TopElem.tutor_id.HasValue) {
+            bChangesFlag =
+                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                    'ipr_person_edit'
+                ).value
+            if (tools_web.is_true(bChangesFlag)) {
+                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                    'ipr_person_edit'
+                ).value = false
+                tools.create_notification(
+                    'approval_boss_ipr_change',
+                    docEduPlan.TopElem.tutor_id,
+                    '/_wt/ipr#ipr_view/' + eduPlanID,
+                    docEduPlan.TopElem.person_id
+                )
+                docEduPlan.Save()
+                bOK = true
+            }
+        }
+    }
+    return bOK
+}

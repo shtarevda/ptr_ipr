@@ -294,7 +294,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                     options={[
                         {
                             value: 0,
-                            label: 'Согласован'
+                            label: 'Согласовано'
                         },
                         {
                             value: 1,
