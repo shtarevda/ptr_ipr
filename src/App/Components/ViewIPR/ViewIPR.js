@@ -83,6 +83,37 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
         return aResult.value
     }
 
+    const saveInPDF = async () => {
+        const requestBody = {
+            action: 'action',
+            code: 'download_ipr',
+            wvars: {
+                ...settings,
+                plan_id: curSubRoutes[0]
+            }
+        }
+
+        const res = await axios.post(
+            'custom_web_template.html?object_id=' + String(settings.controller_id),
+            requestBody
+        )
+
+        if (!res.data.success) {
+            return
+        }
+
+        const { link, filename, success } = JSON.parse(res.data.data.result)
+        // Создаем элемент <a>
+        const oLink = document.createElement('a')
+        oLink.href = link
+        oLink.download = filename
+
+        // Добавляем элемент в документ и сразу удаляем его после клика
+        document.body.appendChild(oLink)
+        oLink.click()
+        document.body.removeChild(oLink)
+    }
+
     const handleSaveProgramComment = (value, program_id) => {
         const callback = () => {
             setViewIPR({
@@ -226,7 +257,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
             title: 'Комментарий',
             dataIndex: 'comment',
             showSorterTooltip: false,
-            hidden: !viewIPR.can_edit,
+            hidden: viewIPR.can_edit,
             sorter: (a, b) => safeLocaleCompare(a.comment, b.comment),
             render: (value, record) => (
                 <Input
@@ -369,6 +400,9 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                                 changeRoute('ipr_edit/' + curSubRoutes[0])
                             }>
                             Редактировать
+                        </Button>
+                        <Button type="default" onClick={() => saveInPDF()}>
+                            Выгрузить в PDF
                         </Button>
                         <Button
                             type="default"
