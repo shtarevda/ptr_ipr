@@ -66,7 +66,7 @@ try {
                     '/_wt/ipr#ipr_view/' + eduPlanID
                 )
                 var path = 'x-local://wt/web/custom_projects/ipr/ipr_lib.js'
-                var LIB = OpenCodeLib(path).clear()
+                var LIB = OpenCodeLib(path)
                 LIB.activateCoursesToPerson(eduPlanID, docEduPlan)
                 break
             case 'on_approval':
