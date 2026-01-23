@@ -14,6 +14,41 @@ function addLog(value, name) {
 }
 
 /**
+ * Получить ссылку на отчет по процедуре "Опрос по ценностям"
+ * @param {string} user_id - ID сотрудника
+ * @param {int} ipr_create_year - год создания ИПР
+ * @param {string} report_type - тип отчета
+ * @return {string}
+ */
+function getReportLink(user_id, ipr_create_year, report_type) {
+    var sReportLink = ''
+    if (report_type == 'Опрос по ценностям') {
+        var sSQL =
+            ' \
+        DECLARE @ipr_create_year int = ' +
+            OptInt(ipr_create_year) +
+            ' \
+        DECLARE @user_id bigint = ' +
+            OptInt(user_id) +
+            " \
+        SELECT aa.id, p.person_id FROM assessment_appraises aa \
+        INNER JOIN pas p ON p.assessment_appraise_id = aa.id AND p.person_id = @user_id \
+        WHERE YEAR(aa.start_date) = @ipr_create_year AND aa.name LIKE 'Опрос по ценностям%' \
+    "
+        var oAssessment = ArrayOptFirstElem(XQuery('sql: ' + sSQL))
+        if (oAssessment != undefined) {
+            sReportLink =
+                '/view_doc.html?mode=doc_type&custom_web_template_id=7350204124263891589&assessment_app_ids=' +
+                oAssessment.id +
+                '&coll_ids=' +
+                oAssessment.person_id
+        }
+    }
+
+    return sReportLink
+}
+
+/**
  * Получить название типа задачи
  * @param {string} тип - тип задачи
  * @return {string}
@@ -85,6 +120,12 @@ function getViewIPR(eduPlanID) {
             docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                 'ipr_type'
             ).value.Value
+        oResult.report_link = getReportLink(
+            docEduPlan.TopElem.person_id,
+            Year(docEduPlan.TopElem.create_date),
+            oResult.process
+        )
+        oResult.report_button_name = 'Отчет по опросу'
         oResult.boss = []
         oResult.cur_user_is_boss = false
         oResult.state_id = docEduPlan.TopElem.state_id.Value

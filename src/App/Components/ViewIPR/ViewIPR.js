@@ -404,6 +404,13 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                         <Button type="default" onClick={() => saveInPDF()}>
                             Выгрузить в PDF
                         </Button>
+                        {viewIPR.report_link && (
+                            <Button
+                                type="default"
+                                onClick={() => window.open(viewIPR.report_link)}>
+                                {viewIPR.report_button_name}
+                            </Button>
+                        )}
                         <Button
                             type="default"
                             onClick={() =>
