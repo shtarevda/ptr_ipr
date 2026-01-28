@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Button, Flex, Select, Table, Typography, Spin } from 'antd'
+import { Button, Flex, Select, Table, Typography, Spin, Input } from 'antd'
 
 import Classes from './ListIPR.module.css'
 
 import GetListColumns from './GetListColumns'
 import Menu from '../Menu/Menu'
+
+const { Search } = Input
 
 const Title = Typography.Title
 
@@ -20,8 +22,20 @@ function ListIPR({ settings, changeRoute, currentRoute }) {
     const [myPersonsFilters, setMyPersonsFilters] = useState([])
     const [curYear, setCurYear] = useState('')
     const [loading, setLoading] = useState(false)
+    const [search, setSearch] = useState('')
 
-    let curList = currentRoute == 'home' ? listIPR : myPersonsListIPR
+    const filteredMyPersonsListIPR =
+        search != ''
+            ? myPersonsListIPR.filter(
+                  (value) =>
+                      String(value.person_fullname)
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                      value.person_fullname.includes(search)
+              )
+            : myPersonsListIPR
+
+    let curList = currentRoute == 'home' ? listIPR : filteredMyPersonsListIPR
     let curFilter = currentRoute == 'home' ? filters : myPersonsFilters
 
     const getListIPR = async () => {
@@ -123,6 +137,8 @@ function ListIPR({ settings, changeRoute, currentRoute }) {
         //getListIPR()
         changeRoute('ipr_edit/' + oResult.id)
     }
+    const onChangeSearch = (e) => setSearch(e.target.value)
+    const onSearch = (value, _e, info) => setSearch(value)
 
     return (
         <div>
@@ -131,31 +147,45 @@ function ListIPR({ settings, changeRoute, currentRoute }) {
             )}
             <Title level={2}>{settings.header_title}</Title>
             <Flex justify="space-between" style={{ marginBottom: 16 }}>
-                {curFilter.map((filter) => (
-                    <Flex gap={16} align="center" key={filter.label}>
-                        <div>{filter.title}:</div>
-                        <Select
-                            size="large"
-                            onChange={handleSelectChange}
-                            options={filter?.items?.map((item) => {
-                                return { value: item, label: item }
-                            })}
-                            style={{ width: 400 }}
-                        />
-                    </Flex>
-                ))}
-
-                {!loading &&
-                    (!assessmentIPR || !reserveIPR) &&
-                    currentRoute == 'home' && (
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                createIPR()
-                            }}>
-                            Добавить ИПР
-                        </Button>
+                <Flex vertical gap={16}>
+                    {curFilter.map((filter) => (
+                        <Flex gap={16} align="center" key={filter.label}>
+                            <div>{filter.title}:</div>
+                            <Select
+                                size="large"
+                                onChange={handleSelectChange}
+                                options={filter?.items?.map((item) => {
+                                    return { value: item, label: item }
+                                })}
+                                style={{ width: 400 }}
+                            />
+                        </Flex>
+                    ))}
+                </Flex>
+                <Flex vertical gap={16} justify="center">
+                    {!loading &&
+                        (!assessmentIPR || !reserveIPR) &&
+                        currentRoute == 'home' && (
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    createIPR()
+                                }}>
+                                Добавить ИПР
+                            </Button>
+                        )}
+                    {currentRoute != 'home' && (
+                        <Flex gap={16} align="center">
+                            <Search
+                                size="large"
+                                placeholder="Поиск по ФИО"
+                                onChange={onChangeSearch}
+                                onSearch={onSearch}
+                                value={search}
+                            />
+                        </Flex>
                     )}
+                </Flex>
             </Flex>
             {loading ? (
                 <Spin tip="Загрузка...">
