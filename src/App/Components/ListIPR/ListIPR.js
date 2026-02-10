@@ -188,7 +188,7 @@ function ListIPR({ settings, changeRoute, currentRoute }) {
                 </Flex>
             </Flex>
             {loading ? (
-                <Spin tip="Загрузка...">
+                <Spin description="Загрузка...">
                     <div style={{ padding: '50px' }}></div>
                 </Spin>
             ) : (
@@ -196,7 +196,8 @@ function ListIPR({ settings, changeRoute, currentRoute }) {
                     rowKey="id"
                     columns={columns}
                     dataSource={filteredListIPR}
-                    pagination={true}></Table>
+                    pagination={true}
+                />
             )}
         </div>
     )

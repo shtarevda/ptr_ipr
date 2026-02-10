@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import ListIPR from '@Components/ListIPR/ListIPR'
 import ClassesGlobal from '@Components/Style.module.css'
 import EditIPR from '@Components/EditIPR/EditIPR'
-import ViewIPR from '../../ViewIPR/ViewIPR'
+import ViewIPR from '@Components/ViewIPR/ViewIPR'
+import AssReport from '@Components/AssReport/AssReport'
 
 const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
     return (
@@ -26,6 +27,13 @@ const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
                     settings={settings}
                     changeRoute={changeRoute}
                     curSubRoutes={curSubRoutes}
+                />
+            )}
+            {currentRoute == 'ass_report' && (
+                <AssReport
+                    settings={settings}
+                    changeRoute={changeRoute}
+                    currentRoute={currentRoute}
                 />
             )}
         </div>

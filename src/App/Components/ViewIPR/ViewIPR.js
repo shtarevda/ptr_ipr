@@ -321,7 +321,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
     return (
         <>
             {loading ? (
-                <Spin tip="Загрузка...">
+                <Spin description="Загрузка...">
                     <div style={{ padding: '50px' }}></div>
                 </Spin>
             ) : (

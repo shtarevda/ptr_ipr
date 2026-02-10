@@ -12,6 +12,10 @@ const items = [
     {
         key: 'my_persons',
         label: 'Мои сотрудники'
+    },
+    {
+        key: 'ass_report',
+        label: 'Отчет по опросу по ценностям'
     }
 ]
 

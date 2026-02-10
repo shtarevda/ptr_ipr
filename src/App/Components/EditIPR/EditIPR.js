@@ -229,6 +229,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                             popupMatchSelectWidth={false}
                             placeholder="Выбрать"
                             value={ipr.process ? ipr.process : null}
+                            disabled={ipr.process}
                             onChange={(value) => {
                                 handleSelectProcess(value)
                             }}
@@ -329,7 +330,7 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                     </Space>
                 </Flex>
             ) : (
-                <Spin tip="Загрузка...">
+                <Spin description="Загрузка...">
                     <div style={{ padding: '50px' }}></div>
                 </Spin>
             )}

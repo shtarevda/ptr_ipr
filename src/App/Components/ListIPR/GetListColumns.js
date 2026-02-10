@@ -165,6 +165,31 @@ const GetListColumns = (changeRoute, currentRoute) => {
             }
         ]
     }
+    if (currentRoute == 'ass_report') {
+        return [
+            {
+                title: 'Название',
+                dataIndex: 'ass_name',
+                showSorterTooltip: false,
+                sorter: (a, b) => safeLocaleCompare(a.ass_name, b.ass_name)
+            },
+            {
+                title: 'Год',
+                dataIndex: 'year',
+                showSorterTooltip: false,
+                sorter: (a, b) => safeLocaleCompare(a.year, b.year)
+            },
+            {
+                title: '',
+                dataIndex: 'link',
+                render: (value) => (
+                    <Button type="default" onClick={() => window.open(value)}>
+                        Открыть
+                    </Button>
+                )
+            }
+        ]
+    }
 }
 
 export default GetListColumns
