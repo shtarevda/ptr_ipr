@@ -272,9 +272,14 @@ function EditIPR({ settings, changeRoute, curSubRoutes }) {
                         setCurCompetenceID={setCurCompetenceID}
                         setParentProgpamID={setParentProgpamID}
                         can_delete={ipr.can_delete}
+                        default_competences={
+                            ipr?.process == 'Опрос по ценностям'
+                                ? ipr.default_ass_competentes
+                                : ipr.default_cr_competentes
+                        }
                     />
 
-                    {competences.length < 4 && (
+                    {competences.length < 4 && ipr.process && (
                         <Button
                             type="text"
                             className={Classes.addCompButton}

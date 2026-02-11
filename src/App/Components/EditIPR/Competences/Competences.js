@@ -18,7 +18,8 @@ function Competences({
     setCatalogType,
     setCurCompetenceID,
     setParentProgpamID,
-    can_delete
+    can_delete,
+    default_competences
 }) {
     const handleSelectCompetence = (value, program_id) => {
         const callback = () => {
@@ -138,44 +139,7 @@ function Competences({
                             onChange={(value) => {
                                 handleSelectCompetence(value, competence.id)
                             }}
-                            options={[
-                                {
-                                    value: '7335364727859933182',
-                                    label: 'Слушай и откликайся'
-                                },
-                                {
-                                    value: '7335364727893263821',
-                                    label: 'Проявляй волю'
-                                },
-                                {
-                                    value: '7335364727923484114',
-                                    label: 'Интересуйся технологиями'
-                                },
-                                {
-                                    value: '7335364728305510084',
-                                    label: 'Будь лучше себя вчерашнего'
-                                },
-                                {
-                                    value: '7335364728312309329',
-                                    label: 'Ищи возможности для улучшений'
-                                },
-                                {
-                                    value: '7335364728682330123',
-                                    label: 'Действуй осознанно'
-                                },
-                                {
-                                    value: '7335364729076808748',
-                                    label: 'Помогай и поддерживай'
-                                },
-                                {
-                                    value: '7335364729080191987',
-                                    label: 'Создавай условия и рабочую атмосферу'
-                                },
-                                {
-                                    value: '7335364729086816643',
-                                    label: 'Признавай свои ошибки. Признавай право других на ошибки'
-                                }
-                            ]}
+                            options={default_competences}
                         />
                     </Space>
                     <Flex gap={8} align="center">
