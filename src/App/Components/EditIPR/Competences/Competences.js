@@ -46,6 +46,31 @@ function Competences({
         saveFieldIPR(oData, callback)
     }
 
+    const handleCompOther = (value, program_id) => {
+        const callback = () => {
+            setCompetences(
+                competences.map((item) => {
+                    if (item.id === program_id) {
+                        return { ...item, name: value }
+                    }
+                    return item
+                })
+            )
+        }
+
+        const oData = {
+            type: 'program',
+            field: {
+                program_id: program_id,
+                parent_progpam_id: '',
+                type: 'field',
+                name: 'name'
+            },
+            value: value
+        }
+        saveFieldIPR(oData, callback)
+    }
+
     const handleResult = (value, program_id) => {
         const callback = () => {
             setCompetences(
@@ -141,6 +166,22 @@ function Competences({
                             }}
                             options={default_competences}
                         />
+                        {competence.comp_id == '7605603723791908442' && (
+                            <Input
+                                placeholder="Название"
+                                allowClear
+                                onBlur={(value) => {
+                                    handleCompOther(
+                                        value.target.value,
+                                        competence.id
+                                    )
+                                }}
+                                onClear={(value) => {
+                                    handleTarget('', competence.id)
+                                }}
+                                defaultValue={competence.name}
+                            />
+                        )}
                     </Space>
                     <Flex gap={8} align="center">
                         <div className={Classes.fieldLabel}>Цель развития:</div>

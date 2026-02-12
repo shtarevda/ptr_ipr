@@ -228,10 +228,6 @@ function getIPR(eduPlanID) {
         {
             value: '7605606505720595166',
             label: 'Стратегическое и системное мышление'
-        },
-        {
-            value: '7605603723791908442',
-            label: 'Другое'
         }
     ]
     return [oResult]
