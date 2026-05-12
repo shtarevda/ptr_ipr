@@ -19,8 +19,8 @@ const items = [
     }
 ]
 
-const Menu = ({ changeRoute, currentRoute }) => {
-    if (items.length == 0) {
+const Menu = ({ changeRoute, currentRoute, menuItems = items }) => {
+    if (menuItems.length == 0) {
         return null
     }
     const onChange = (key) => {
@@ -30,7 +30,7 @@ const Menu = ({ changeRoute, currentRoute }) => {
     return (
         <Tabs
             defaultActiveKey={currentRoute}
-            items={items}
+            items={menuItems}
             style={{ marginBottom: '24px' }}
             onChange={onChange}
             size="large"

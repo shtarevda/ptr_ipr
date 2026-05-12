@@ -51,6 +51,9 @@ try {
                 docEduPlan.TopElem.custom_elems.ObtainChildByKey(
                     'ipr_status'
                 ).value = 'В процессе'
+                docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                    'ipr_approval_date'
+                ).value = Date()
                 sNotifCode = 'approval_boss_ipr_ok'
                 bBossEdit = tools_web.is_true(
                     docEduPlan.TopElem.custom_elems.ObtainChildByKey(
