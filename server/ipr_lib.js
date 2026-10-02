@@ -6,7 +6,7 @@
 function addLog(value, name) {
     var sLogName = name
     if (sLogName == undefined) {
-        sLogName = 'lmp_lib'
+        sLogName = 'ipr_lib'
     }
 
     EnableLog(sLogName)
