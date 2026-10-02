@@ -68,13 +68,8 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif|woff2|svg|woff|eot|ttf)$/i,
-                loader: 'file-loader',
-                options: {
-                    publicPath: './',
-                    name: '[name]-[hash].[ext]',
-                    publicPath: projectConfig.publicPath
-                }
+                test: /\.(png|jpe?g|webp|gif|woff2|svg|woff|eot|ttf)$/i,
+                type: 'asset/resource'
             }
         ]
     },
