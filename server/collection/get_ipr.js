@@ -40,6 +40,7 @@ function getIPR(eduPlanID) {
     var oItem = {}
     var oTask = {}
     var aProcesses = []
+    var oMethod = undefined
     if (docEduPlan != undefined) {
         sCurPlanStatus =
             docEduPlan.TopElem.custom_elems.ObtainChildByKey('ipr_status').value
@@ -116,9 +117,18 @@ function getIPR(eduPlanID) {
                 oTask.finish_date = StrDate(task.finish_date.Value, false)
                 oTask.state_id = task.state_id.Value
                 oTask.comment = task.comment.Value
+                oTask.is_free = false
                 switch (task.type) {
                     case 'learning_task':
-                        oItem.tasks.push(oTask)
+                        //свой вариант во вкладке «Саморазвитие»
+                        oMethod = task.custom_elems.GetOptChildByKey('ipr_method')
+                        if (oMethod != undefined && oMethod.value == 'self') {
+                            oTask.type_name = 'Саморазвитие'
+                            oTask.is_free = true
+                            oItem.learnings.push(oTask)
+                        } else {
+                            oItem.tasks.push(oTask)
+                        }
                         break
                     case 'material':
                         if (task.tutor_id.HasValue) {
@@ -141,6 +151,7 @@ function getIPR(eduPlanID) {
                         oItem.collaborators.items.push(oTask)
                         break
                     case 'course':
+                    case 'org':
                     case 'education_method':
                         oItem.learnings.push(oTask)
                         break

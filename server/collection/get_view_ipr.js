@@ -115,6 +115,7 @@ function getViewIPR(eduPlanID) {
     var oItem = {}
     var i = 1
     var sCommentHistory = ''
+    var oMethod = undefined
     if (docEduPlan != undefined) {
         oResult.id = eduPlanID
         oResult.process =
@@ -189,6 +190,11 @@ function getViewIPR(eduPlanID) {
                 oItem.parent_progpam_id = task.parent_progpam_id.Value
                 oItem.type = task.type.Value
                 oItem.type_name = getTypeName(task.type.Value)
+                //свой вариант во вкладке «Саморазвитие»
+                oMethod = task.custom_elems.GetOptChildByKey('ipr_method')
+                if (oMethod != undefined && oMethod.value == 'self') {
+                    oItem.type_name = 'Саморазвитие'
+                }
                 oItem.name = task.name.Value
                 oItem.create_date = StrDate(task.create_date.Value, false)
                 oItem.plan_date = StrDate(task.plan_date.Value, false)
