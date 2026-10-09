@@ -13,7 +13,7 @@ const items = [
     },
     {
         key: 'my_persons',
-        label: 'Мои сотрудники'
+        label: 'ИПР моих сотрудников'
     },
     {
         key: 'ass_report',
