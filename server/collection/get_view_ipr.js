@@ -114,6 +114,7 @@ function getViewIPR(eduPlanID) {
     var oResult = {}
     var oItem = {}
     var i = 1
+    var sCommentHistory = ''
     if (docEduPlan != undefined) {
         oResult.id = eduPlanID
         oResult.process =
@@ -136,8 +137,23 @@ function getViewIPR(eduPlanID) {
         oResult.can_edit =
             oResult.status == 'В процессе' || oResult.status == 'Завершено'
         oResult.comment = docEduPlan.TopElem.comment.Value
+        oResult.person_fullname = docEduPlan.TopElem.person_fullname.Value
+        //редактировать могут только сотрудник и его руководитель в ИПР
+        oResult.read_only = docEduPlan.TopElem.person_id.Value != curUserID
+        oResult.comment_history = []
+        sCommentHistory = String(
+            docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+                'ipr_comment_history'
+            ).value
+        )
+        if (sCommentHistory != '') {
+            oResult.comment_history = ParseJson(sCommentHistory)
+        }
         if (docEduPlan.TopElem.tutor_id.HasValue) {
             oResult.cur_user_is_boss = curUserID == docEduPlan.TopElem.tutor_id
+            if (oResult.cur_user_is_boss) {
+                oResult.read_only = false
+            }
             oBoss = docEduPlan.TopElem.tutor_id.OptForeignElem
             if (oBoss != undefined) {
                 oResult.boss.push({

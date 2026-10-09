@@ -1,0 +1,134 @@
+<%
+try {
+	var path = "x-local://wt/web/custom_projects/libs/collection_lib.js"
+	var requestBody = {
+		action: 'collection',
+		code: 'get_view_ipr',
+		wvars: {
+			plan_id: TopElem.Doc.DocID
+		}
+	}
+	var collection_lib = OpenCodeLib(path);
+	var oRequest = {
+    Session: {
+			Env: {
+				curUserID: TopElem.person_id,
+				curUser: (OptInt(TopElem.person_id, 0) != 0 ? OpenDoc(UrlFromDocID(TopElem.person_id)).TopElem : null),
+				curObjectID: null,
+				curObject: null
+			}
+		}
+	};
+	var result = collection_lib.execCollection(requestBody, oRequest);
+	if (!result.success) {
+		throw result.messageText;
+	}
+	
+	var data = result.results[0]
+	//alert(tools.object_to_text(data, 'json'))
+	
+	var boss_fullname = 'Не выбран'
+	var oBoss = TopElem.tutor_id.OptForeignElem
+	if (oBoss != undefined) {
+		boss_fullname = oBoss.fullname
+	}
+}
+catch(ex) {
+	alert("Ошибка печатной формы ИПР: " + ex)
+}
+
+%>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИПР</title>
+    <style>
+		.background {
+			height: 297mm;
+			width: 210mm;
+		}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+	<h1><%=TopElem.name%></h1>
+	<p>Процесс: <%=data.process%></p>
+	<p>Руководитель: <%=boss_fullname%></p>
+	<p>Дата создания: <%=TopElem.create_date%></p>
+	<p>Планируемая дата завершения: <%=TopElem.plan_date%></p>
+	<p>Статус: <%=TopElem.custom_elems.ObtainChildByKey("ipr_status").value%></p>
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Компетенция</th>
+                <th>Задача</th>
+                <th>Тип задачи</th>
+                <th>Планируется завершить</th>
+                <th>Завершен</th>
+                <th>Комментарий</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+<%
+				for (elem in data.programs) {
+					sStatus = ''
+					switch(OptInt(elem.program_status, 0)) {
+						case 1:
+							sStatus = 'В процессе'
+							break;
+						case 3:
+							sStatus = 'Не пройдено'
+							break;
+						case 4:
+							sStatus = 'Пройдено'
+							break;
+						case 6:
+							sStatus = 'Отменено'
+							break;
+					}
+%>
+            <tr>
+                <td><%=elem.index%></td>
+                <td><%=elem.comp_name%></td>
+                <td><%=elem.name%></td>
+                <td><%=elem.type_name%></td>
+                <td><%=elem.plan_date%></td>
+                <td><%=elem.finish_date%></td>
+                <td><%=elem.comment%></td>
+                <td><%=sStatus%></td>
+            </tr>
+<%
+				}
+%>
+        </tbody>
+    </table>
+    <h3>Комментарий</h3>
+    <p style="white-space: pre-wrap"><%=HtmlEncode(data.comment)%></p>
+</body>
+</html>
+

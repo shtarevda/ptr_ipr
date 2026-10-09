@@ -10,7 +10,8 @@ import {
     Space,
     Button,
     Spin,
-    Select
+    Select,
+    Modal
 } from 'antd'
 
 import Classes from './ViewIPR.module.css'
@@ -30,6 +31,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
     const [viewIPR, setViewIPR] = useState([])
     const [mainComment, setMainComment] = useState('')
     const [loading, setLoading] = useState(false)
+    const [openHistory, setOpenHistory] = useState(false)
     const getViewIPR = async () => {
         const requestBody = {
             action: 'collection',
@@ -196,10 +198,15 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
         saveFieldIPR(oData, callback)
     }
     const handleMainComment = (value) => {
-        const callback = () => {
+        if (value == viewIPR.comment) {
+            return
+        }
+        const callback = (result) => {
             setViewIPR({
                 ...viewIPR,
-                comment: value
+                comment: value,
+                comment_history:
+                    result?.comment_history || viewIPR.comment_history
             })
         }
 
@@ -215,6 +222,12 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
         setLoading(true)
         getViewIPR()
     }, [])
+
+    // наблюдатель (управляющий СТЦ) возвращается в обзор по СТЦ
+    let listRoute = viewIPR.cur_user_is_boss ? 'my_persons' : 'home'
+    if (viewIPR.read_only) {
+        listRoute = 'stc'
+    }
 
     const columns = [
         {
@@ -257,11 +270,11 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
             title: 'Комментарий',
             dataIndex: 'comment',
             showSorterTooltip: false,
-            hidden: viewIPR.can_edit,
+            hidden: !viewIPR.can_edit,
             sorter: (a, b) => safeLocaleCompare(a.comment, b.comment),
             render: (value, record) => (
                 <Input
-                    disabled={!viewIPR.can_edit}
+                    disabled={!viewIPR.can_edit || viewIPR.read_only}
                     allowClear
                     defaultValue={value}
                     onBlur={(val) =>
@@ -286,7 +299,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                 ),
             render: (value, record) => (
                 <Select
-                    disabled={!viewIPR.can_edit}
+                    disabled={!viewIPR.can_edit || viewIPR.read_only}
                     popupMatchSelectWidth={false}
                     placeholder="Выбрать"
                     value={value}
@@ -334,11 +347,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                                 href: '',
                                 onClick: (e) => {
                                     e.preventDefault()
-                                    changeRoute(
-                                        viewIPR.cur_user_is_boss
-                                            ? 'my_persons'
-                                            : 'home'
-                                    )
+                                    changeRoute(listRoute)
                                 }
                             },
                             {
@@ -354,6 +363,10 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                             color={getStatusColor(viewIPR.status)}
                             text={viewIPR.status}
                         />
+                        {(viewIPR.read_only || viewIPR.cur_user_is_boss) &&
+                            viewIPR.person_fullname && (
+                                <div>Сотрудник: {viewIPR.person_fullname}</div>
+                            )}
                     </Flex>
                     <Table
                         rowKey="id"
@@ -366,6 +379,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                         <TextArea
                             placeholder="Добавьте комментарий к ИПР"
                             allowClear
+                            disabled={viewIPR.read_only}
                             onBlur={(value) =>
                                 handleMainComment(value.target.value)
                             }
@@ -374,13 +388,56 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                             }
                             value={mainComment}
                             style={{ width: '900px', height: '160px' }}
-                            onClear={(value) => {
-                                handleMainComment(value)
+                            onClear={() => {
+                                setMainComment('')
+                                handleMainComment('')
                             }}
                         />
+                        {viewIPR.comment_history?.length > 0 && (
+                            <div>
+                                <Button
+                                    type="default"
+                                    onClick={() => setOpenHistory(true)}>
+                                    История комментариев (
+                                    {viewIPR.comment_history.length})
+                                </Button>
+                            </div>
+                        )}
+                        <Modal
+                            title="История комментариев"
+                            open={openHistory}
+                            onCancel={() => setOpenHistory(false)}
+                            footer={null}
+                            width={800}
+                            centered>
+                            <Flex vertical gap={16}>
+                                {[...(viewIPR.comment_history || [])]
+                                    .reverse()
+                                    .map((item, index) => (
+                                        <div key={index}>
+                                            <div style={{ color: '#8C8C8C' }}>
+                                                {[
+                                                    item.date || 'Ранее',
+                                                    item.person_fullname
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(', ')}
+                                            </div>
+                                            <div
+                                                style={{
+                                                    whiteSpace: 'pre-wrap'
+                                                }}>
+                                                {item.comment || (
+                                                    <i>Комментарий удалён</i>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                            </Flex>
+                        </Modal>
                     </Flex>
                     <Space size={8}>
-                        {viewIPR.status == 'Черновик' && (
+                        {viewIPR.status == 'Черновик' && !viewIPR.read_only && (
                             <Button
                                 type="primary"
                                 onClick={handleSendApproval}
@@ -394,13 +451,15 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                                     Согласовать
                                 </Button>
                             )}
-                        <Button
-                            type="default"
-                            onClick={() =>
-                                changeRoute('ipr_edit/' + curSubRoutes[0])
-                            }>
-                            Редактировать
-                        </Button>
+                        {!viewIPR.read_only && (
+                            <Button
+                                type="default"
+                                onClick={() =>
+                                    changeRoute('ipr_edit/' + curSubRoutes[0])
+                                }>
+                                Редактировать
+                            </Button>
+                        )}
                         <Button type="default" onClick={() => saveInPDF()}>
                             Выгрузить в PDF
                         </Button>
@@ -413,13 +472,7 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
                         )}
                         <Button
                             type="default"
-                            onClick={() =>
-                                changeRoute(
-                                    viewIPR.cur_user_is_boss
-                                        ? 'my_persons'
-                                        : 'home'
-                                )
-                            }>
+                            onClick={() => changeRoute(listRoute)}>
                             Вернуться к списку
                         </Button>
                     </Space>

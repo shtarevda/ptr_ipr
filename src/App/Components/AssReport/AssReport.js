@@ -37,7 +37,11 @@ function AssReport({ settings, changeRoute, currentRoute }) {
     }, [])
     return (
         <div>
-            <Menu changeRoute={changeRoute} currentRoute={currentRoute} />
+            <Menu
+                settings={settings}
+                changeRoute={changeRoute}
+                currentRoute={currentRoute}
+            />
             {loading ? (
                 <Spin description="Загрузка...">
                     <div style={{ padding: '50px' }}></div>

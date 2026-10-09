@@ -29,6 +29,48 @@ try {
         }
     }
 
+    /**
+     * Записать изменение общего комментария в журнал
+     * @param {string} sNewComment - новый текст комментария
+     * @return {array} - журнал комментариев
+     */
+    function addCommentHistory(sNewComment) {
+        var aHistory = []
+        var oPerson = undefined
+        var sFullname = ''
+        var sOldComment = String(docEduPlan.TopElem.comment.Value)
+        var oHistory = docEduPlan.TopElem.custom_elems.ObtainChildByKey(
+            'ipr_comment_history'
+        )
+        if (String(oHistory.value) != '') {
+            aHistory = ParseJson(String(oHistory.value))
+        }
+        if (sNewComment == sOldComment) {
+            return aHistory
+        }
+        //комментарий, сохранённый до появления журнала
+        if (ArrayCount(aHistory) == 0 && sOldComment != '') {
+            aHistory.push({ date: '', person_fullname: '', comment: sOldComment })
+        }
+        oPerson = ArrayOptFirstElem(
+            XQuery(
+                'for $elem in collaborators where $elem/id = ' +
+                    OptInt(curUserID) +
+                    ' return $elem/Fields("fullname")'
+            )
+        )
+        if (oPerson != undefined) {
+            sFullname = String(oPerson.fullname)
+        }
+        aHistory.push({
+            date: StrDate(Date(), true, false),
+            person_fullname: sFullname,
+            comment: sNewComment
+        })
+        oHistory.value = EncodeJson(aHistory)
+        return aHistory
+    }
+
     var eduPlanID = OptInt(plan_id, undefined)
     if (eduPlanID == undefined) {
         throw 'Не указан id плана обучения'
@@ -96,6 +138,11 @@ try {
                 break
             case 'field':
                 setEdit()
+                if (oData.field == 'comment') {
+                    sReturnValue = {
+                        comment_history: addCommentHistory(String(oData.value))
+                    }
+                }
                 docEduPlan.TopElem.Child(oData.field).Value = oData.value
                 break
             case 'competence':

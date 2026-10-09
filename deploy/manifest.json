@@ -9,6 +9,15 @@
     "drop_cache": ["x-local://wt/web/custom_projects/ipr/ipr_lib.js"],
     "objects": [
         {
+            "kind": "print_form",
+            "code": "ipr",
+            "name": "Печатная форма ИПР",
+            "type": "pdf",
+            "file_name": "ipr.html",
+            "object_name": "education_plan",
+            "source": "server/print_form/ipr.html"
+        },
+        {
             "kind": "custom_web_template",
             "code": "ipr_controller",
             "name": "ИПР. Контроллер",
@@ -108,6 +117,12 @@
             "name": "ИПР. Отчёты по опросу по ценностям",
             "source": "server/collection/get_ass_reports.js",
             "wvars": [{ "name": "person_id", "type": "string", "title": "ID сотрудника" }]
+        },
+        {
+            "kind": "remote_collection",
+            "code": "get_ipr_stc_list",
+            "name": "ИПР. Обзор по СТЦ для управляющего",
+            "source": "server/collection/get_ipr_stc_list.js"
         },
 
         {

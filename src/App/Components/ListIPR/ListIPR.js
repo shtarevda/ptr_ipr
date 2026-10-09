@@ -142,7 +142,11 @@ function ListIPR({ settings, changeRoute, currentRoute }) {
 
     return (
         <div>
-            <Menu changeRoute={changeRoute} currentRoute={currentRoute} />
+            <Menu
+                settings={settings}
+                changeRoute={changeRoute}
+                currentRoute={currentRoute}
+            />
             <Title level={2}>{settings.header_title}</Title>
             <Flex justify="space-between" style={{ marginBottom: 16 }}>
                 <Flex vertical gap={16}>

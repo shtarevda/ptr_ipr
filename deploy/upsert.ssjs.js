@@ -85,7 +85,8 @@ var oForms = {
 	override_web_template: 'x-local://wtv/wtv_override_web_template.xmd',
 	remote_collection: 'x-local://wtv/wtv_remote_collection.xmd',
 	remote_action: 'x-local://wtv/wtv_remote_action.xmd',
-	server_agent: 'x-local://wtv/wtv_server_agent.xmd'
+	server_agent: 'x-local://wtv/wtv_server_agent.xmd',
+	print_form: 'x-local://wtv/wtv_print_form.xmd'
 };
 var sForm = oForms.GetOptProperty( sKind, '' );
 var xId, oDoc, oTe, iRoleId, iPresetId, oBusy, xTemplateId, oTemplate;
@@ -183,6 +184,16 @@ switch ( sKind )
 		oTe.exec_code.code_text.Value = sBody;
 		fill_wvars( oTe, aWvars );
 		break;
+
+	case 'print_form':
+		/* шаблон формы хранится в карточке, в поле data */
+		oTe.name.Value = mf_str( oItem, 'name', sCode );
+		oTe.type.Value = mf_str( oItem, 'type', 'pdf' );
+		oTe.file_encoding.Value = mf_str( oItem, 'file_encoding', 'utf-8' );
+		oTe.file_name.Value = mf_str( oItem, 'file_name', sCode + '.html' );
+		oTe.object_name.Value = mf_str( oItem, 'object_name', '' );
+		oTe.data.Value = sBody;
+		break;
 }
 
 oTe.role_id.ObtainByValue( iRoleId );
@@ -198,5 +209,5 @@ RESULT = {
 	created: bCreated,
 	name: String( oTe.name ),
 	role_id: ArrayMerge( oTe.role_id, 'String( This.Value )', ',' ),
-	wvars: ArrayMerge( oTe.wvars, 'This.name.Value + "=" + This.value.Value', '; ' )
+	wvars: ( sKind == 'print_form' ? '' : ArrayMerge( oTe.wvars, 'This.name.Value + "=" + This.value.Value', '; ' ) )
 };

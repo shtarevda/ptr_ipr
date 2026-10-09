@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs } from 'antd'
 
 import ClassesGlobal from '@Components/Style.module.css'
 import Classes from './Menu.module.css'
+import loadStcData from '@services/stcData'
 
 const items = [
     {
@@ -19,7 +20,21 @@ const items = [
     }
 ]
 
-const Menu = ({ changeRoute, currentRoute, menuItems = items }) => {
+const stcItem = {
+    key: 'stc',
+    label: 'ИПР моего СТЦ'
+}
+
+const Menu = ({ settings, changeRoute, currentRoute, menuItems = items }) => {
+    const [hasStc, setHasStc] = useState(false)
+
+    // вкладка СТЦ видна только управляющему
+    useEffect(() => {
+        if (settings) {
+            loadStcData(settings).then((data) => setHasStc(data.has_access))
+        }
+    }, [])
+
     if (menuItems.length == 0) {
         return null
     }
@@ -29,8 +44,8 @@ const Menu = ({ changeRoute, currentRoute, menuItems = items }) => {
 
     return (
         <Tabs
-            defaultActiveKey={currentRoute}
-            items={menuItems}
+            activeKey={currentRoute}
+            items={hasStc ? [...menuItems, stcItem] : menuItems}
             style={{ marginBottom: '24px' }}
             onChange={onChange}
             size="large"

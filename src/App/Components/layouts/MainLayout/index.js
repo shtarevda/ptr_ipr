@@ -4,6 +4,7 @@ import ClassesGlobal from '@Components/Style.module.css'
 import EditIPR from '@Components/EditIPR/EditIPR'
 import ViewIPR from '@Components/ViewIPR/ViewIPR'
 import AssReport from '@Components/AssReport/AssReport'
+import StcIPR from '@Components/StcIPR/StcIPR'
 
 const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
     return (
@@ -27,6 +28,13 @@ const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
                     settings={settings}
                     changeRoute={changeRoute}
                     curSubRoutes={curSubRoutes}
+                />
+            )}
+            {currentRoute == 'stc' && (
+                <StcIPR
+                    settings={settings}
+                    changeRoute={changeRoute}
+                    currentRoute={currentRoute}
                 />
             )}
             {currentRoute == 'ass_report' && (
