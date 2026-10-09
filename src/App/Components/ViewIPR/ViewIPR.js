@@ -253,6 +253,12 @@ function ViewIPR({ settings, changeRoute, curSubRoutes }) {
             sorter: (a, b) => safeLocaleCompare(a.type_name, b.type_name)
         },
         {
+            title: 'Процент',
+            dataIndex: 'method_percent',
+            showSorterTooltip: false,
+            sorter: (a, b) => a.method_percent - b.method_percent
+        },
+        {
             title: 'Планируется завершить',
             dataIndex: 'plan_date',
             width: viewIPR.can_edit ? '100px' : '',

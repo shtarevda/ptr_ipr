@@ -49,6 +49,24 @@ function getReportLink(user_id, ipr_create_year, report_type) {
 }
 
 /**
+ * Получить долю метода развития по модели 70/20/10:
+ * на рабочем месте - 70, через других - 20, саморазвитие - 10
+ * @param {string} type - тип задачи
+ * @param {boolean} isSelf - свой вариант во вкладке «Саморазвитие»
+ * @return {number}
+ */
+function getMethodPercent(type, isSelf) {
+    if (type == 'material') {
+        return 20
+    }
+    if (type == 'learning_task' && !isSelf) {
+        return 70
+    }
+
+    return 10
+}
+
+/**
  * Получить название типа задачи
  * @param {string} тип - тип задачи
  * @return {string}
@@ -116,6 +134,7 @@ function getViewIPR(eduPlanID) {
     var i = 1
     var sCommentHistory = ''
     var oMethod = undefined
+    var bSelf = false
     if (docEduPlan != undefined) {
         oResult.id = eduPlanID
         oResult.process =
@@ -192,9 +211,11 @@ function getViewIPR(eduPlanID) {
                 oItem.type_name = getTypeName(task.type.Value)
                 //свой вариант во вкладке «Саморазвитие»
                 oMethod = task.custom_elems.GetOptChildByKey('ipr_method')
-                if (oMethod != undefined && oMethod.value == 'self') {
+                bSelf = oMethod != undefined && oMethod.value == 'self'
+                if (bSelf) {
                     oItem.type_name = 'Саморазвитие'
                 }
+                oItem.method_percent = getMethodPercent(task.type.Value, bSelf)
                 oItem.name = task.name.Value
                 oItem.create_date = StrDate(task.create_date.Value, false)
                 oItem.plan_date = StrDate(task.plan_date.Value, false)
