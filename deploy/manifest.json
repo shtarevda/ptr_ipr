@@ -1,0 +1,163 @@
+{
+    "category": { "code": "ptr_ipr", "name": "ptr_ipr" },
+    "project_dir": "custom_projects/ipr",
+    "files": [
+        { "from": "dist", "to": "build", "client": true },
+        { "from": "server/ipr_lib.js", "to": "ipr_lib.js" },
+        { "from": "server/controller.js", "to": "controller.js" }
+    ],
+    "drop_cache": ["x-local://wt/web/custom_projects/ipr/ipr_lib.js"],
+    "objects": [
+        {
+            "kind": "custom_web_template",
+            "code": "ipr_controller",
+            "name": "ИПР. Контроллер",
+            "id": "7148214962165246509",
+            "source": "server/controller.js",
+            "comment": "id совпадает с захардкоженным в src/App/services/LoadConfig.js"
+        },
+        {
+            "kind": "custom_web_template",
+            "code": "ipr",
+            "name": "ИПР",
+            "url": "custom_projects/ipr/build/index.html",
+            "wvars": [
+                { "name": "controller_id", "type": "foreign_elem", "catalog": "custom_web_template", "title": "Контроллер", "value_ref": { "catalog": "custom_web_templates", "code": "ipr_controller" } },
+                { "name": "header_title", "type": "string", "title": "Заголовок страницы", "value": "Индивидуальный план развития" },
+                { "name": "print_form_id", "type": "foreign_elem", "catalog": "print_form", "title": "Печатная форма ИПР", "value_ref": { "catalog": "print_forms", "code": "ipr" } }
+            ]
+        },
+        {
+            "kind": "custom_web_template",
+            "code": "ipr_dev",
+            "name": "ИПР DEV",
+            "body": "<div id=\"app_root\"></div>",
+            "comment": "Точка монтирования для npm run start (BrowserSync подменяет div#app_root)",
+            "wvars": [
+                { "name": "controller_id", "type": "foreign_elem", "catalog": "custom_web_template", "title": "Контроллер", "value_ref": { "catalog": "custom_web_templates", "code": "ipr_controller" } },
+                { "name": "header_title", "type": "string", "title": "Заголовок страницы", "value": "Индивидуальный план развития" },
+                { "name": "print_form_id", "type": "foreign_elem", "catalog": "print_form", "title": "Печатная форма ИПР", "value_ref": { "catalog": "print_forms", "code": "ipr" } }
+            ]
+        },
+        {
+            "kind": "override_web_template",
+            "code": "ipr",
+            "mode": "ipr",
+            "zone": "main",
+            "template": "ipr",
+            "wvars": [
+                { "name": "controller_id", "type": "foreign_elem", "catalog": "custom_web_template", "title": "Контроллер", "value_ref": { "catalog": "custom_web_templates", "code": "ipr_controller" } },
+                { "name": "header_title", "type": "string", "title": "Заголовок страницы", "value": "Индивидуальный план развития" },
+                { "name": "print_form_id", "type": "foreign_elem", "catalog": "print_form", "title": "Печатная форма ИПР", "value_ref": { "catalog": "print_forms", "code": "ipr" } }
+            ]
+        },
+        {
+            "kind": "override_web_template",
+            "code": "ipr_dev",
+            "mode": "ipr_dev",
+            "zone": "main",
+            "template": "ipr_dev",
+            "wvars": [
+                { "name": "controller_id", "type": "foreign_elem", "catalog": "custom_web_template", "title": "Контроллер", "value_ref": { "catalog": "custom_web_templates", "code": "ipr_controller" } },
+                { "name": "header_title", "type": "string", "title": "Заголовок страницы", "value": "Индивидуальный план развития" },
+                { "name": "print_form_id", "type": "foreign_elem", "catalog": "print_form", "title": "Печатная форма ИПР", "value_ref": { "catalog": "print_forms", "code": "ipr" } }
+            ]
+        },
+
+        {
+            "kind": "remote_collection",
+            "code": "get_ipr_list",
+            "name": "ИПР. Список ИПР сотрудника",
+            "source": "server/collection/get_ipr_list.js",
+            "wvars": [{ "name": "person_id", "type": "string", "title": "ID сотрудника" }]
+        },
+        {
+            "kind": "remote_collection",
+            "code": "get_ipr_my_persons_list",
+            "name": "ИПР. Список ИПР подчинённых",
+            "source": "server/collection/get_ipr_my_persons_list.js",
+            "wvars": [{ "name": "person_id", "type": "string", "title": "ID руководителя" }]
+        },
+        {
+            "kind": "remote_collection",
+            "code": "get_ipr",
+            "name": "ИПР. План для редактирования",
+            "source": "server/collection/get_ipr.js",
+            "wvars": [
+                { "name": "person_id", "type": "string", "title": "ID сотрудника" },
+                { "name": "plan_id", "type": "string", "title": "ID плана обучения" }
+            ]
+        },
+        {
+            "kind": "remote_collection",
+            "code": "get_view_ipr",
+            "name": "ИПР. План для просмотра",
+            "source": "server/collection/get_view_ipr.js",
+            "wvars": [{ "name": "plan_id", "type": "string", "title": "ID плана обучения" }]
+        },
+        {
+            "kind": "remote_collection",
+            "code": "get_ipr_learnings",
+            "name": "ИПР. Каталог программ",
+            "source": "server/collection/get_ipr_learnings.js",
+            "wvars": [{ "name": "competence_id", "type": "string", "title": "ID компетенции" }]
+        },
+        {
+            "kind": "remote_collection",
+            "code": "get_ass_reports",
+            "name": "ИПР. Отчёты по опросу по ценностям",
+            "source": "server/collection/get_ass_reports.js",
+            "wvars": [{ "name": "person_id", "type": "string", "title": "ID сотрудника" }]
+        },
+
+        {
+            "kind": "remote_action",
+            "code": "create_ipr",
+            "name": "ИПР. Создать",
+            "source": "server/action/create_ipr.js"
+        },
+        {
+            "kind": "remote_action",
+            "code": "delete_ipr",
+            "name": "ИПР. Удалить",
+            "source": "server/action/delete_ipr.js",
+            "wvars": [{ "name": "plan_id", "type": "string", "title": "ID плана обучения" }]
+        },
+        {
+            "kind": "remote_action",
+            "code": "edit_ipr",
+            "name": "ИПР. Изменить",
+            "source": "server/action/edit_ipr.js",
+            "wvars": [
+                { "name": "plan_id", "type": "string", "title": "ID плана обучения" },
+                { "name": "str_json", "type": "text", "title": "Изменение в JSON: {type, field, value}" }
+            ]
+        },
+        {
+            "kind": "remote_action",
+            "code": "save_button_ipr",
+            "name": "ИПР. Кнопка «Сохранить»",
+            "source": "server/action/save_button_ipr.js",
+            "wvars": [{ "name": "plan_id", "type": "string", "title": "ID плана обучения" }]
+        },
+        {
+            "kind": "remote_action",
+            "code": "download_ipr",
+            "name": "ИПР. Скачать печатную форму",
+            "source": "server/action/download_ipr.js",
+            "wvars": [
+                { "name": "plan_id", "type": "string", "title": "ID плана обучения" },
+                { "name": "print_form_id", "type": "string", "title": "ID печатной формы" }
+            ]
+        },
+
+        {
+            "kind": "server_agent",
+            "code": "ipr_send_notif",
+            "name": "ИПР. Напоминания через 3 и 6 месяцев",
+            "source": "server/agent/send_notif.js",
+            "trigger_type": "never",
+            "comment": "На локальном стенде без расписания; на проде запускается ежедневно"
+        }
+    ]
+}
