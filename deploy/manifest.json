@@ -124,6 +124,13 @@
             "name": "ИПР. Обзор по СТЦ для управляющего",
             "source": "server/collection/get_ipr_stc_list.js"
         },
+        {
+            "kind": "remote_collection",
+            "code": "get_ipr_admin_search",
+            "name": "ИПР. Поиск ИПР по ФИО для администраторов",
+            "source": "server/collection/get_ipr_admin_search.js",
+            "wvars": [{ "name": "search", "type": "string", "title": "Часть ФИО сотрудника" }]
+        },
 
         {
             "kind": "remote_action",

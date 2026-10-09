@@ -4,6 +4,7 @@ import { Tabs } from 'antd'
 import ClassesGlobal from '@Components/Style.module.css'
 import Classes from './Menu.module.css'
 import loadStcData from '@services/stcData'
+import { loadAdminAccess } from '@services/adminData'
 
 const items = [
     {
@@ -25,15 +26,30 @@ const stcItem = {
     label: 'ИПР моего СТЦ'
 }
 
+const adminItem = {
+    key: 'admin_export',
+    label: 'Выгрузка ИПР'
+}
+
 const Menu = ({ settings, changeRoute, currentRoute, menuItems = items }) => {
     const [hasStc, setHasStc] = useState(false)
+    const [hasAdmin, setHasAdmin] = useState(false)
 
-    // вкладка СТЦ видна только управляющему
+    // вкладка СТЦ видна только управляющему, выгрузка - администраторам
     useEffect(() => {
         if (settings) {
             loadStcData(settings).then((data) => setHasStc(data.has_access))
+            loadAdminAccess(settings).then(setHasAdmin)
         }
     }, [])
+
+    const extraItems = []
+    if (hasStc) {
+        extraItems.push(stcItem)
+    }
+    if (hasAdmin) {
+        extraItems.push(adminItem)
+    }
 
     if (menuItems.length == 0) {
         return null
@@ -45,7 +61,7 @@ const Menu = ({ settings, changeRoute, currentRoute, menuItems = items }) => {
     return (
         <Tabs
             activeKey={currentRoute}
-            items={hasStc ? [...menuItems, stcItem] : menuItems}
+            items={[...menuItems, ...extraItems]}
             style={{ marginBottom: '24px' }}
             onChange={onChange}
             size="large"

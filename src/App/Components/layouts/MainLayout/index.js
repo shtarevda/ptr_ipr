@@ -5,6 +5,7 @@ import EditIPR from '@Components/EditIPR/EditIPR'
 import ViewIPR from '@Components/ViewIPR/ViewIPR'
 import AssReport from '@Components/AssReport/AssReport'
 import StcIPR from '@Components/StcIPR/StcIPR'
+import AdminExport from '@Components/AdminExport/AdminExport'
 
 const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
     return (
@@ -32,6 +33,13 @@ const MainLayout = ({ settings, changeRoute, currentRoute, curSubRoutes }) => {
             )}
             {currentRoute == 'stc' && (
                 <StcIPR
+                    settings={settings}
+                    changeRoute={changeRoute}
+                    currentRoute={currentRoute}
+                />
+            )}
+            {currentRoute == 'admin_export' && (
+                <AdminExport
                     settings={settings}
                     changeRoute={changeRoute}
                     currentRoute={currentRoute}
