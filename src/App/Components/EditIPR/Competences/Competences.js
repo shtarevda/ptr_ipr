@@ -10,6 +10,18 @@ import Learnings from './Learnings/Learnings'
 const Title = Typography.Title
 const { TextArea } = Input
 
+/**
+ * Компетенция пустая: нет цели, результата и ни одного метода развития
+ * @param {object} competence
+ * @return {boolean}
+ */
+const isEmptyCompetence = (competence) =>
+    !competence.comment &&
+    !competence.result &&
+    competence.tasks.length == 0 &&
+    competence.collaborators.items.length == 0 &&
+    competence.learnings.length == 0
+
 function Competences({
     competences,
     setCompetences,
@@ -145,7 +157,7 @@ function Competences({
                         <Title level={4} style={{ marginBottom: 0 }}>
                             Компетенция {index + 1}
                         </Title>
-                        {can_delete && (
+                        {(can_delete || isEmptyCompetence(competence)) && (
                             <div className={Classes.trash}>
                                 <DeleteOutlined
                                     onClick={() =>
